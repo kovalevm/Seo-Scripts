@@ -1,0 +1,121 @@
+<html>
+	<head>
+	<title>Term plus word</title>
+		<meta charset = "utf-8">
+	</head>
+	<body>
+			<script type="text/javascript">
+
+function adding( ) {
+	function replaceAll(find, replace, str) {
+  return str.replace(new RegExp(find, 'g'), replace);
+}
+var terms = document.loandata.terms.value;
+var addWords = document.loandata.addWord.value;
+var termsResult = document.getElementById("termsResult");
+termsResult.value = ''; 
+addWords = replaceAll(', ', ',',addWords);
+var spliter = ",";
+var arr = terms.split("\n");
+var words = addWords.split(spliter);
+
+for (j = 0; j < words.length; j++) 
+{
+	for (i = 0; i<arr.length; i++)
+	{
+		while(arr[i][arr[i].length -1] == " ")
+		{
+			arr[i] = arr[i].substring(0, arr[i].length - 1);
+		}
+		termsResult.value += arr[i].toLowerCase() + " " + words[j].toLowerCase() + "\n";
+	}
+	if (j < words.length -1) termsResult.value += j + "00000000000000000000000000000000000000000000000\n";
+}
+}
+
+function traslit(text) {
+text = text.toLowerCase();
+	var transl=new Array();
+	transl['а']='a';
+	transl['б']='b';
+	transl['в']='v';
+	transl['г']='g';
+	transl['д']='d';
+	transl['е']='e';
+	transl['ё']='yo';
+	transl['ж']='zh';
+	transl['з']='z';
+	transl['и']='i';
+	transl['й']='j';
+	transl['к']='k';
+	transl['л']='l';
+	transl['м']='m';
+	transl['н']='n';
+	transl['о']='o';
+	transl['п']='p';
+	transl['р']='r';
+	transl['с']='s';
+	transl['т']='t';
+	transl['у']='u';
+	transl['ф']='f';
+	transl['х']='h';
+	transl['ц']='c';
+	transl['ч']='ch';
+	transl['ш']='sh';
+	transl['щ']='shch';
+	transl['ъ']='';
+	transl['ы']='y';
+	transl['ь']='';
+	transl['э']='eh';
+	transl['ю']='yu';
+	transl['я']='ya';
+	transl[' ']='_';
+	transl['\n']='\n';
+	
+
+	var result='';
+	for(var i=0;i<text.length;i++) {
+		if(transl[text[i]]!=undefined) { result+=transl[text[i]];}
+		else { /*result+=text[i];*/ }
+	}
+	return result;
+}
+
+function trans() {
+var text = document.getElementById('transSource').value;
+while(text[text.length -1] == " ")
+		{
+			text = text.substring(0, text.length - 1);
+		}
+document.getElementById('transResult').value = traslit(text);
+}
+
+
+</script>
+div
+		<form action="" name="loandata">
+			<table>
+				<tr><td><textarea name="terms" cols="70" rows="35"></textarea></td>
+					<td></td>
+					<td><textarea id="termsResult" cols="70" rows="35"></textarea></td>
+				</tr>
+			</table>
+			<table>
+				<tr>
+					<td>Add words separated by ",": 
+						<textarea cols="110" rows="5" type="text" name="addWord" >,Ростов, в Ростове, Ростов на дону, в Ростове на Дону</textarea></td>
+					<td></td>
+					<td style='border:solid 0px; width:75px;'><input  style="height:100%; width:100%" size="50" type="button" id="goButton" value="GO!" onclick="adding( );"></td>
+				</tr>
+			</table>
+		</form>
+		
+		<table>
+				<tr><td><textarea id="transSource" cols="55" rows="10">Как правильно выбрать металлопрокат?</textarea></td>
+					<td></td>
+					<td><textarea id="transResult" cols="55" rows="10"></textarea></td>
+				</tr>
+			</table>
+			<input  style="margin-bottom:30px/*height:100%; width:100%*/" type="button" id="transBtn" value="В транслит" onclick="trans();"></td>
+	</body>
+</html>

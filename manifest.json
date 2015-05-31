@@ -1,0 +1,39 @@
+{
+    "manifest_version": 2,
+
+    "name": "Seo Scripts",
+    "version": "1.2.0",
+
+    "description": "2015",
+    "icons": {
+        "16": "img/16x16.ico",
+        "32": "img/32x32.ico",
+        "48": "img/48x48.png",
+        "128": "img/128x128.png"
+    },
+
+
+"content_scripts": [
+    {
+      "matches": [ "http://yandex.ru/yandsearch*",
+                  "http://yandex.ru/search*",
+                  "http://www.liveinternet.ru/stat/*/queries.html*",
+                  "http://www.liveinternet.ru/stat/*/searches.html*",
+                 "https://metrika.yandex.ru/stat/phrases/*",
+                 "https://beta.metrika.yandex.ru/list?",
+                 "http://bunker-yug.ru/*"
+                 ],
+      "js": ["notmyscripts/jquery.js","static.js","myscript.js"],
+      "css": ["css/mystyle.css"]
+    }
+  ],
+	"permissions": [
+             "tabs", "http://yandex.ru/yandsearch*", "storage"
+        ],
+
+    "browser_action": {
+        "default_title": "Seo Scripts",
+        "default_icon": "img/48x48.png",
+        "default_popup": "popup/popup.html"
+    }
+ }

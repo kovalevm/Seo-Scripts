@@ -1,0 +1,34 @@
+<html>
+	<head>
+	<title>Term plus word</title>
+		<meta charset = "utf-8">
+	</head>
+	<body>
+
+
+		<form action="" name="loandata">
+			<table>
+				<tr><td><textarea name="terms" cols="70" rows="35"></textarea></td>
+					<td></td>
+					<td><textarea id="termsResult" cols="70" rows="35"></textarea></td>
+				</tr>
+			</table>
+			<table>
+				<tr>
+					<td>Add words separated by ",": 
+						<textarea cols="110" rows="5" type="text" name="addWord" >,Ростов, в Ростове, Ростов на дону, в Ростове на Дону</textarea></td>
+					<td></td>
+					<td style='border:solid 0px; width:75px;'><input  style="height:100%; width:100%" size="50" type="button" id="goButton" value="GO!"></td>
+				</tr>
+			</table>
+		</form>
+		<table>
+				<tr><td><textarea id="transSource" cols="55" rows="10">Как правильно выбрать металлопрокат?</textarea></td>
+					<td></td>
+					<td><textarea id="transResult" cols="55" rows="10"></textarea></td>
+				</tr>
+			</table>
+			<input  style="margin-bottom:30px/*height:100%; width:100%*/" type="button" id="transBtn" value="В транслит">
+			<script type="text/javascript" src="tpwscript.js"></script>
+	</body>
+</html>
