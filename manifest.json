@@ -2,7 +2,7 @@
     "manifest_version": 2,
 
     "name": "Seo Scripts",
-    "version": "1.2.0",
+    "version": "1.2.6",
 
     "description": "2015",
     "icons": {
@@ -19,8 +19,9 @@
                   "http://yandex.ru/search*",
                   "http://www.liveinternet.ru/stat/*/queries.html*",
                   "http://www.liveinternet.ru/stat/*/searches.html*",
-                 "https://metrika.yandex.ru/stat/phrases/*",
-                 "https://beta.metrika.yandex.ru/list?",
+                 "https://metrika.yandex.ru/*",
+				 "https://beta.metrika.yandex.ru/*",
+                 "https://old.metrika.yandex.ru/*",
                  "http://bunker-yug.ru/*"
                  ],
       "js": ["notmyscripts/jquery.js","static.js","myscript.js"],

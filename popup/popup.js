@@ -9,16 +9,28 @@ chrome.storage.local.get('seoChanger', function(result) {
 		seoChanger = JSON.parse(seoChanger);
 		jQuery.each(seoChanger, function(key, value) {
 			console.log(key + " : " + value);
-			document.getElementById(key).checked= value ? true : false;
+			if ((value == true) || (value == false)) document.getElementById(key).checked= value ? true : false;
+			else document.getElementById(key).value = value;
 		});
+		if (document.getElementById('bunLogin').value == '') { $('#dopLinks').attr('disabled',true); };
 	}
 });
 
-$('.checkbox-activation').click(function(){
+
+$("#bunLogin" ).keyup(function(){
+	console.log(document.getElementById("bunLogin").value);
+	if (document.getElementById('bunLogin').value == '') { $('#dopLinks').attr('disabled',true); }
+	else $('#dopLinks').removeAttr('disabled');
+
+});
+
+$('input').click(function(){
 	var seoChanger = new Object();
-	var checkboxs = $('.checkbox-activation');
-	for (var i = 0; i < checkboxs.length; i++) {
-		seoChanger[checkboxs[i].id] = checkboxs[i].checked;
+	var inputs = $('input');
+	for (var i = 0; i < inputs.length; i++) {
+		if (inputs[i].type == 'checkbox') 	seoChanger[inputs[i].id] = inputs[i].checked;
+		else seoChanger[inputs[i].id] = inputs[i].value;
+
 	}
 	seoChanger = JSON.stringify(seoChanger);
 	chrome.storage.local.set({'seoChanger': seoChanger})

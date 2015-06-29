@@ -307,6 +307,31 @@ function printYaMetSearchTerms() {
 	$('.b-placeholder').eq(0).append(table);
 }
 
+function printBetaYaMetSearchTerms() {
+	var phrases = Array();
+	$(".data-table__dimension-item").each(function(indx, element){
+		phrases.push($(element).text());
+	});
+
+	var table = '<h5> Всего фраз: ' + (phrases.length) + '</h5><table id="mk" style="border:1px solid black; border-collapse: collapse; margin:20px 3px"><tr><td class="serchTerms">';
+	var printToAlert = "";
+
+
+	for (var i = 0; i<parseInt((phrases.length)/2); i++)
+	{
+		table += phrases[i] + "<br />";
+	}
+
+	table += '</td><td class="serchTerms">';
+	for (var j = parseInt(phrases.length/2); j<phrases.length; j++)
+	{
+		table += phrases[j] + "<br />";
+	}
+	table += '</td></tr></table>';
+	$( ".report-page__table" ).before( table );
+}
+
+
 function planirovka(badHosts) {
 	var issue = determineIssue();
 	deleteRigthColumn();
