@@ -12,10 +12,11 @@
         "128": "img/128x128.png"
     },
 
+    "options_page": "options.html",
 
-"content_scripts": [
-    {
-      "matches": [ "http://yandex.ru/yandsearch*",
+    "content_scripts": [
+        {
+            "matches": ["http://yandex.ru/yandsearch*",
                   "http://yandex.ru/search*",
                   "http://www.liveinternet.ru/stat/*/queries.html*",
                   "http://www.liveinternet.ru/stat/*/searches.html*",
@@ -24,17 +25,20 @@
                  "https://old.metrika.yandex.ru/*",
                  "http://bunker-yug.ru/*"
                  ],
-      "js": ["notmyscripts/jquery.js","static.js","myscript.js"],
-      "css": ["css/mystyle.css"]
+            "js": ["notmyscripts/jquery.js", "static.js", "myscript.js"],
+            "css": ["css/mystyle.css"]
     }
   ],
-	"permissions": [
-             "tabs", "http://yandex.ru/yandsearch*", "storage"
+    "permissions": [
+             "tabs", "storage", "http://*/*", "https://*/*"
         ],
+    "background": {
+        "scripts": ["background.js"]
+    },
 
     "browser_action": {
         "default_title": "Seo Scripts",
         "default_icon": "img/48x48.png",
         "default_popup": "popup/popup.html"
     }
- }
+}
