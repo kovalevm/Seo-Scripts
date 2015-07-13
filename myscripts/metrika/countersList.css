@@ -1,0 +1,121 @@
+td.counters-table__cell-chosen.counters-table__body-cell {
+	 padding:0px 3px 0;
+	 vertical-align:middle;
+}
+
+td.counters-table__cell-status.counters-table__body-cell {
+	padding:0 3px;
+	vertical-align:middle;
+}
+
+td.counters-table__cell-title.counters-table__body-cell {
+	padding:0 0px 0 30px;
+	vertical-align:middle;
+}
+
+td.counters-table__cell-visits.counters-table__body-cell {
+	padding:0;
+	vertical-align:middle;
+}
+
+td.counters-table__cell-chart.counters-table__body-cell {
+	padding:0;
+}
+
+td.counters-table__cell-counter-type.counters-table__body-cell {
+	padding:0;
+	display:none;
+}
+
+th.counters-table__head-cell.counters-table__head-cell_type_counter-type {
+	padding:0;
+	display:none;
+}
+
+td.counters-table__cell-webcounter.counters-table__body-cell {
+	padding:0;
+	display:none;
+}
+
+th.counters-table__head-cell.counters-table__head-cell_type_webcounter {
+	padding:0;
+	display:none;
+}
+
+td.counters-table__cell-grants.counters-table__body-cell {
+	padding:0;
+}
+
+td.counters-table__cell-grants.counters-table__body-cell div.counter-grant-unsubscribe {
+	 display:none;
+}
+
+th.counters-table__head-cell.counters-table__head-cell_type_controls {
+	padding:0;
+}
+
+td.counters-table__cell-controls.counters-table__body-cell {
+	padding:0;
+}
+
+td.counters-table__cell-removes.counters-table__body-cell {
+	padding:0;
+}
+
+table.counters-table.counters-table_type_all.counters__table.i-bem.counters-table_js_inited {
+	width:900px;
+}
+
+.counters-table__info {
+	 display:none;
+}
+
+td.counters-table__cell-title.counters-table__body-cell {
+	 width:100px;
+}
+
+td.counters-table__cell-controls.counters-table__body-cell {
+	 width:30px;
+}
+
+table.counters-table.counters-table_type_all.counters__table.i-bem.counters-table_js_inited >tbody {
+	 width:100%;
+}
+
+table.counters-table.counters-table_type_all.counters__table.i-bem.counters-table_js_inited {
+	 display:block;
+	  width:100%;
+}
+
+tr.counters-table__body-row {
+	 display:inline-block;
+	 float:left;
+	 width:800px;
+	 border-right:1px solid black;
+	 padding:0 5px;
+}
+
+thead >tr {
+	 display:none;
+}
+
+td.counters-table__cell-chart.counters-table__body-cell {
+	 text-align:right;
+	 width:200px;
+}
+
+.counters-table__chart-wrap {
+	 float:right;
+}
+
+.counter-visits {
+	 float:right;
+}
+
+td.counters-table__cell-title.counters-table__body-cell {
+	 width:100%;
+}
+
+td.counters-table__cell-grants.counters-table__body-cell {
+	 vertical-align:middle;
+}

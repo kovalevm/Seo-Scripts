@@ -1,0 +1,19 @@
+td .serchTerms {
+	padding:2px 7px;
+	border:1px solid black;
+	font:13px Arial;
+	line-height: 20px
+}
+
+table.LiSS {
+    /*border:1px solid black; */
+    border-collapse: collapse;
+    margin:20px 3px;
+}
+
+
+table.LiSS td {
+	border:1px solid black;
+	font:13px Arial;
+	padding:2px 7px;
+}

@@ -14,6 +14,21 @@
 
     "options_page": "options.html",
 
+    "content_scripts": [
+        {
+            "matches": ["http://yandex.ru/yandsearch*",
+                  "http://yandex.ru/search*",
+                  "http://www.liveinternet.ru/stat/*/queries.html*",
+                  "http://www.liveinternet.ru/stat/*/searches.html*",
+                 "https://metrika.yandex.ru/*",
+				 "https://beta.metrika.yandex.ru/*",
+                 "https://old.metrika.yandex.ru/*",
+                 "http://bunker-yug.ru/*"
+                 ],
+            "js": ["notmyscripts/jquery.js", "static.js", "myscript.js"],
+            "css": ["css/mystyle.css"]
+    }
+  ],
     "permissions": [
              "tabs", "storage", "http://*/*", "https://*/*"
         ],

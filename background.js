@@ -1,57 +1,59 @@
 var routes = {
     'https*://yandex.ru/(yand)?search.*': {
         toggle: 'planirovka',
-        scripts: ['yandsearch/planirovka.js'],
+        myScripts: ['yandsearch/planirovka.js'],
+        notMyScripts: ['punycode.js'],
         css: 'yandsearch/planirovka.css'
     },
     'https*://www.liveinternet.ru/stat/.*/queries.html.*': {
-        toggle: 'planirovka',
-        scripts: ['yandsearch/planirovka.js'],
-        css: 'yandsearch/planirovka.css'
+        toggle: 'LIphrases',
+        myScripts: ['liveinternet/queries.js'],
+        css: 'liveinternet/liveinternet.css'
     },
     'https*://www.liveinternet.ru/stat/.*/searches.html.*': {
-        toggle: 'planirovka',
-        scripts: ['yandsearch/planirovka.js'],
-        css: 'yandsearch/planirovka.css'
+        toggle: 'LISearchSistem',
+        myScripts: ['liveinternet/search_sistems.js'],
+        css: 'liveinternet/liveinternet.css'
     },
     'https*://old.metrika.yandex.ru/stat/phrases/.*': {
-        toggle: 'planirovka',
-        scripts: ['yandsearch/planirovka.js'],
-        css: 'yandsearch/planirovka.css'
+        toggle: 'YaMphrases',
+        myScripts: ['metrika/oldSearchTerms.js'],
+        //css: 'yandsearch/planirovka.css'
     },
     'https*://(beta\.)?metrika.yandex.ru/stat/phrases.*': {
-        toggle: 'planirovka',
-        scripts: ['yandsearch/planirovka.js'],
-        css: 'yandsearch/planirovka.css'
+        toggle: 'YaMphrases',
+        myScripts: ['metrika/searchTerms.js'],
+        //css: 'yandsearch/planirovka.css'
     },
     'https*://(beta\.)?metrika.yandex.ru/list.*': {
-        toggle: 'planirovka',
-        scripts: ['yandsearch/planirovka.js'],
-        css: 'yandsearch/planirovka.css'
+        toggle: 'metrikaList',
+        myScripts: [],
+        jquery : false,
+        css: 'metrika/countersList.css'
     },
     'http:\/\/bunker-yug\.ru\/customer\.php\?.+reporttable.*': {
-        toggle: 'planirovka',
-        scripts: ['yandsearch/planirovka.js'],
+        toggle: 'topPagination',
+        myScripts: ['yandsearch/planirovka.js'],
         css: 'yandsearch/planirovka.css'
     },
     'http:\/\/bunker-yug\.ru\/customer\.php\?.+reporttable.+page.*': {
         toggle: 'planirovka',
-        scripts: ['yandsearch/planirovka.js'],
+        myScripts: ['yandsearch/planirovka.js'],
         css: 'yandsearch/planirovka.css'
     },
     'http:\/\/bunker-yug\.ru\/customer\.php\?.*id.*': {
         toggle: 'planirovka',
-        scripts: ['yandsearch/planirovka.js'],
+        myScripts: ['yandsearch/planirovka.js'],
         css: 'yandsearch/planirovka.css'
     },
     'http:\/\/bunker-yug\.ru\/customer\.php\?.*plan.*': {
         toggle: 'planirovka',
-        scripts: ['yandsearch/planirovka.js'],
+        myScripts: ['yandsearch/planirovka.js'],
         css: 'yandsearch/planirovka.css'
     },
     'http://bunker-yug.ru/.*': {
         toggle: 'planirovka',
-        scripts: ['yandsearch/planirovka.js'],
+        myScripts: ['yandsearch/planirovka.js'],
         css: 'yandsearch/planirovka.css'
     }
 }
@@ -67,36 +69,54 @@ chrome.storage.local.get('seoChanger', function (result) {
 
 
 chrome.storage.onChanged.addListener(function (changes, areaName) {
-    console.log(changes);
+    //console.log(changes);
     if (changes['seoChanger']) seoChanger = changes['seoChanger'].newValue;
     seoChanger = JSON.parse(seoChanger);
 });
 
 
 chrome.tabs.onUpdated.addListener(function (tabId, info, tab) {
-    console.log('backgroung.js start on ' + tab.url);
+    if (tab.status === 'loading') return;
+    //console.log('backgroung.js start on ' + tab.url);
     var pattern = '';
     if ((pattern = determinePattern(tab.url)) === null) return;
     var patternData = routes[pattern];
-    console.log(patternData);
+    //console.log(patternData);
     //console.log('backgroung.js on ' + tab.url + ' with pattern - ' + pattern);
-    console.log(seoChanger[patternData.toggle]);
+    //console.log(seoChanger[patternData.toggle]);
     if (!seoChanger[patternData.toggle]) return;
 
     console.log('backgroung.js on ' + tab.url + ' with pattern - ' + pattern + ' with toggle - ' + patternData.toggle);
     if (patternData.css) {
         console.log(patternData.css);
         chrome.tabs.insertCSS(tab.id, {
-            file: patternData.css
+            file: 'myscripts/' + patternData.css
         });
     }
 
-    for (var script in patternData.scripts) {
-        console.log(patternData.scripts[script]);
+    if (patternData.jquery != false) {
+        //console.log('jquery execute!');
         chrome.tabs.executeScript(tab.id, {
-            file: 'myscripts/' + patternData.scripts[script]
+            file: 'notmyscripts/jquery.js'
         });
     }
+    if (patternData.notMyScripts && patternData.notMyScripts.length > 0) {
+        //console.log(patternData.notMyScripts);
+        for (var script in patternData.notMyScripts) {
+            console.log(patternData.notMyScripts[script]);
+            chrome.tabs.executeScript(tab.id, {
+                file: 'notmyscripts/' + patternData.notMyScripts[script]
+            });
+        }
+    }
+    for (var script in patternData.myScripts) {
+        console.log(patternData.myScripts[script]);
+        chrome.tabs.executeScript(tab.id, {
+            file: 'myscripts/' + patternData.myScripts[script]
+        });
+    }
+    chrome.tabs.onUpdated.removeListener();
+    return;
 
 });
 
@@ -108,27 +128,3 @@ function determinePattern(url) {
     }
     return null;
 }
-
-
-/*var YaMetList = new RegExp('https*://(beta\.)?metrika.yandex.ru/list.*', 'i');
-var GLOBAL_VALUES = {};
-
-chrome.storage.onChanged.addListener(function(changes, areaName){
-    console.log(changes);
-    console.log(areaName);
-
-});
-chrome.storage.local.get('seoChanger', function (result) {
-    GLOBAL_VALUES = result['seoChanger'];
-    if (!!(GLOBAL_VALUES)) {
-        GLOBAL_VALUES = JSON.parse(GLOBAL_VALUES);
-    }
-    console.log(GLOBAL_VALUES);
-});
-
-chrome.tabs.onUpdated.addListener(function (tabId, info, tab) {
-    if (tab.url.match(YaMetList).index == 0 && GLOBAL_VALUES['metrikaList'])
-        chrome.tabs.insertCSS(tab.id, {
-            file: "css/yaMetrikaList.css"
-        });
-});*/
