@@ -1,0 +1,6 @@
+.links_adm label {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    padding: 0px 2px;
+}

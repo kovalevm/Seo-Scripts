@@ -1,0 +1,52 @@
+body * {
+max-width:1400px
+}
+
+#seopanel {
+width:1080px
+}
+
+.seos {
+width:inherit
+}
+
+.showCopy {
+left:620px !important
+}
+
+body > div:nth-child(2) {
+margin:auto;
+    /*display: none;*/
+}
+
+p[style='text-align: center; margin: 0px; padding: 0px 0px 9px 0px;'] { display:none}
+
+a.sbut[href="?type=seo"] {display:none}
+
+div.stbase, div.stbase2 {
+    display: none;
+}
+
+#search {
+left:1150px!important
+}
+
+body {
+overflow-x:auto
+}
+
+#CopyDiv table > tbody > tr > td:nth-child(2),#CopyDiv table > tbody > tr > td:nth-child(3),#CopyDiv table > tbody > tr > td:nth-child(4),#CopyDiv table > tbody > tr > td:nth-child(9) {
+display:none
+}
+
+.tit_st.catPP,.tit_st.catWork {
+width:initial!important
+}
+
+tr.rowcust  > td:nth-child(12), tr.rowcust > td:nth-child(15),tr.rowcust > td:nth-child(16),tr.rowcust > td:nth-child(10),tr.rowcust > td:nth-child(9) { display: none;}
+tr.bgcltp  > td:nth-child(12), tr.bgcltp > td:nth-child(15),tr.bgcltp > td:nth-child(16),tr.bgcltp > td:nth-child(10),tr.bgcltp > td:nth-child(9) { display: none;}
+div.hiddenFiltersReport { display:none}
+
+.tit_f .tit_f_otstup {  width: 180px!important;}
+/*
+.top_bar > div > div > a:nth-child(19),.top_bar > div > div > a:nth-child(20),.top_bar > div > div > a:nth-child(21)*/
