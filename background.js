@@ -1,5 +1,3 @@
-
-
 var seoChanger = {};
 var routes = {}
 chrome.storage.local.get('seoChanger', function (result) {
@@ -128,12 +126,12 @@ return routes = {
         myScripts: ['bunker/topPagination.js'],
         //css: 'yandsearch/planirovka.css'
     },
-    /*
+
         'http:\/\/bunker-yug\.ru\/customer\.php\?.*id.*': {
-            toggle: 'planirovka',
-            myScripts: ['yandsearch/planirovka.js'],
-            css: 'yandsearch/planirovka.css'
-        },
+            toggle: 'squeeze',
+            myScripts: ['bunker/squeeze.js'],
+            //css: 'yandsearch/planirovka.css'
+        },/*
         'http:\/\/bunker-yug\.ru\/customer\.php\?.*plan.*': {
             toggle: 'planirovka',
             myScripts: ['yandsearch/planirovka.js'],

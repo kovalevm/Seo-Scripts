@@ -1,11 +1,11 @@
-var badHosts = ["yabs.yandex.ru","news.yandex.ru","rostov.propartner.ru","market.yandex.ru","rostov.pulscen.ru","rostov.tiu.ru","rostov.blizko.ru","rostov-na-donu.unibo.ru","rostov-na-donu.dmir.ru","rostovnadonu.flagma.ru","rostov-na-donu.aport.ru","www.rostov-na-donu.build2last.ru","ru.wikipedia.org","rostov.neobroker.ru","www.rosrealt.ru","rostovnadonu.irr.ru","rostov.n1.ru","rostov-na-donu.naydidom.com","dom.mirkvartir.ru","www.realtymag.ru","www.grinas.ru","zemlidona.ru","www.avito.ru","allorostov.ru","www.yell.ru","dic.academic.ru","rostov.printura.ru", "rostov.4geo.ru", "rnd.spravker.ru"];
+var badHosts = ["yabs.yandex.ru", "news.yandex.ru", "rostov.propartner.ru", "market.yandex.ru", "rostov.pulscen.ru", "rostov.tiu.ru", "rostov.blizko.ru", "rostov-na-donu.unibo.ru", "rostov-na-donu.dmir.ru", "rostovnadonu.flagma.ru", "rostov-na-donu.aport.ru", "www.rostov-na-donu.build2last.ru", "ru.wikipedia.org", "rostov.neobroker.ru", "www.rosrealt.ru", "rostovnadonu.irr.ru", "rostov.n1.ru", "rostov-na-donu.naydidom.com", "dom.mirkvartir.ru", "www.realtymag.ru", "www.grinas.ru", "zemlidona.ru", "www.avito.ru", "allorostov.ru", "www.yell.ru", "dic.academic.ru", "rostov.printura.ru", "rostov.4geo.ru", "rnd.spravker.ru"];
 
 insertStript();
-//setInterval(function () {
-//    if ($("div").is("#mk")) {} else {
-        planirovka(badHosts);
-//    }
-//}, 2000);
+
+if ($("div").is("#mk")) {} else {
+    planirovka(badHosts);
+}
+
 
 function planirovka(badHosts) {
     var issue = determineIssue();
@@ -32,10 +32,10 @@ function determineIssue() {
 function deleteRigthColumn() {
     var rightColumn = document.getElementsByClassName('serp-list')[1];
     try {
-    rightColumn = rightColumn.getElementsByClassName('serp-adv');
-    for (var i = 0; i < rightColumn.length; i++) {
-        rightColumn[i].remove();
-    };
+        rightColumn = rightColumn.getElementsByClassName('serp-adv');
+        for (var i = 0; i < rightColumn.length; i++) {
+            rightColumn[i].remove();
+        };
     } catch (e) {}
 }
 
@@ -179,26 +179,28 @@ function insertStript() {
 
     head.appendChild(loadedJS);
 }
-function myConcat(main,additional) {
-	for (qqq=0; qqq < additional.length; qqq++)
-		main.push(additional[qqq]);
-	return main;
-}
-function isBadWithOtbrosSym(word,badWords,otbrosSym) {
-	var needLength = word.length-otbrosSym;
-	for (j=0;j<badWords.length;j++) {
-		if (word.toLowerCase().substring(0,needLength)===badWords[j].toLowerCase().substring(0,needLength)) {// || word===traslit(badWords[j]))
-		return true;
-		}
-	}
-	return false;
+
+function myConcat(main, additional) {
+    for (qqq = 0; qqq < additional.length; qqq++)
+        main.push(additional[qqq]);
+    return main;
 }
 
-function isBad(word,badWords) {
-	for (j=0;j<badWords.length;j++) {
-		if (word.toLowerCase()===badWords[j].toLowerCase()) {
-			return true;
-		}
-	}
-	return false;
+function isBadWithOtbrosSym(word, badWords, otbrosSym) {
+    var needLength = word.length - otbrosSym;
+    for (j = 0; j < badWords.length; j++) {
+        if (word.toLowerCase().substring(0, needLength) === badWords[j].toLowerCase().substring(0, needLength)) { // || word===traslit(badWords[j]))
+            return true;
+        }
+    }
+    return false;
+}
+
+function isBad(word, badWords) {
+    for (j = 0; j < badWords.length; j++) {
+        if (word.toLowerCase() === badWords[j].toLowerCase()) {
+            return true;
+        }
+    }
+    return false;
 }
