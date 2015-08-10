@@ -64,7 +64,9 @@ function determineBoldWords(issue) {
         }
 
         try {
+            //console.log(issue);
             var snippet = issue[j].getElementsByClassName('serp-item__text')[0];
+            //console.log(snippet);
             var b = snippet.getElementsByTagName('b');
             for (i = 0; i < b.length - 1; i++) {
                 var s = b[i].innerHTML.toLowerCase().replace('<wbr>', '');
@@ -98,7 +100,8 @@ function determineMainAndInternalPage(issue, badHosts) {
     page = '';
 
     for (i = 0; i < issue.length; i++) {
-        urls = issue[i].getElementsByClassName('b-link serp-item__title-link serp-item__title-link');
+        urls = issue[i].getElementsByClassName('serp-item__title-link');
+        console.log(issue[i]);
         h2 = issue[i].getElementsByTagName('h2')[0];
         try {
             url = urls[0].href;
