@@ -1,0 +1,7 @@
+body * {
+max-width:1211px;
+}
+
+form#formID {
+    margin: auto;
+}

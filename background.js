@@ -136,16 +136,16 @@ function determineRoutes(routes) {
             myScripts: ['bunker/squeeze.js'],
             //css: 'yandsearch/planirovka.css'
         },
-        /*
-                'http:\/\/bunker-yug\.ru\/customer\.php\?.*plan.*': {
-                    toggle: 'planirovka',
-                    myScripts: ['yandsearch/planirovka.js'],
-                    css: 'yandsearch/planirovka.css'
-                },*/
+
         'http*s*://bunker-yug.ru/.*': {
             toggle: 'squeeze',
             myScripts: [ /*'bunker/squeeze.js'*/ ],
             css: 'bunker/squeeze.css'
+        },
+        'http:\/\/bunker-yug\.ru\/client\.php\?.*id.*': {
+            toggle: 'squeeze',
+            myScripts: [ /*'bunker/squeeze.js'*/ ],
+            css: 'bunker/squeezeClient.css'
         },
         'https*://bunker-yug.ru/.*': {
             toggle: 'dopLinks',
