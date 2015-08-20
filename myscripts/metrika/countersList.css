@@ -19,7 +19,7 @@ td.counters-table__body-cell {
 
 /*Метки*/
 .counter-label-list {
-    display:none;
+    display:none !important;
 }
 
 /*Под названием счетчика инфа*/
@@ -36,7 +36,7 @@ td.counters-table__cell-grants.counters-table__body-cell > div {
 }
 /*Кнопка Отписатся*/
 .counter-grant-unsubscribe {
-    margin-bottom:0;
+    margin-bottom:0 !important;
 }
 
 /*Проценты изменения*/
@@ -46,8 +46,8 @@ span.counter-activity__changes {
 
 /*Двигаем название счетчика вправо*/
 td.counters-table__cell-title {
-	text-align:left;
-	padding:0 0px 0 30px;
+	text-align:left !important;
+	padding:0 0px 0 30px !important;
 }
 
 /*Ширина визитам, хостам, посетителям*/
@@ -64,104 +64,3 @@ td.counters-table__cell-first {
 td.counters-table__cell-title{
 	 width:205px;
 }
-
-/*
-table.counters-table.counters-table_type_all.counters__table.i-bem.counters-table_js_inited {
-	 display:block;
-	  width:100%;
-}
-table.counters-table.counters-table_type_all.counters__table.i-bem.counters-table_js_inited >tbody {
-	 width:100%;
-}
-
-
-td.counters-table__cell-controls.counters-table__body-cell {
-	 width:30px;
-}
-
-
-td.counters-table__cell-status.counters-table__body-cell {
-	padding:0 3px;
-	vertical-align:middle;
-}
-td.counters-table__cell-chosen.counters-table__body-cell {
-	 padding:0px 3px 0;
-	 vertical-align:middle;
-}
-td.counters-table__cell-counter-type.counters-table__body-cell {
-	padding:0;
-	display:none;
-}
-
-
-
-
-
-
-
-
-
-
-td.counters-table__cell-webcounter.counters-table__body-cell {
-	padding:0;
-	display:none;
-}
-
-th.counters-table__head-cell.counters-table__head-cell_type_webcounter {
-	padding:0;
-	display:none;
-}
-
-td.counters-table__cell-grants.counters-table__body-cell {
-	padding:0;
-}
-
-td.counters-table__cell-grants.counters-table__body-cell div.counter-grant-unsubscribe {
-	 display:none;
-}
-
-th.counters-table__head-cell.counters-table__head-cell_type_controls {
-	padding:0;
-}
-
-td.counters-table__cell-controls.counters-table__body-cell {
-	padding:0;
-}
-
-td.counters-table__cell-removes.counters-table__body-cell {
-	padding:0;
-}
-
-
-
-
-
-
-
-
-
-
-td.counters-table__cell-chart.counters-table__body-cell {
-	 text-align:right;
-	 width:200px;
-}
-
-.counters-table__chart-wrap {
-	 float:right;
-}
-
-.counter-visits {
-	 float:right;
-}
-
-
-
-td.counters-table__cell-grants.counters-table__body-cell {
-	 vertical-align:middle;
-}
-
-*/
-
-
-
-

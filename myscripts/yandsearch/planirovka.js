@@ -14,19 +14,21 @@ function planirovka(badHosts) {
 }
 
 function determineIssue() {
-    var tempIssue = [];
-    var issue = [];
-    issueClassNameLength = 24;
-    blocks = document.getElementsByClassName('serp-block serp-block');
-    for (i = 0; i < blocks.length; i++) {
-        if (blocks[i].className.length === issueClassNameLength) {
-            tempIssue.push(document.getElementsByClassName(blocks[i].className));
-        }
-    }
-    for (i = 0; i < tempIssue.length; i++) {
-        issue = myConcat(issue, tempIssue[i][0].getElementsByClassName('serp-item'));
-    }
-    return issue;
+    //    var tempIssue = [];
+    //    var issue = [];
+    //    issueClassNameLength = 24;
+    //    blocks = document.getElementsByClassName('serp-block serp-block');
+    //    for (i = 0; i < blocks.length; i++) {
+    //        if (blocks[i].className.length === issueClassNameLength) {
+    //            tempIssue.push(document.getElementsByClassName(blocks[i].className));
+    //        }
+    //    }
+    //    for (i = 0; i < tempIssue.length; i++) {
+    //        issue = myConcat(issue, tempIssue[i][0].getElementsByClassName('serp-item'));
+    //    }
+    //    return issue;
+    return $("div[data-bem*='serp-item\":{}']");
+
 }
 
 function deleteRigthColumn() {

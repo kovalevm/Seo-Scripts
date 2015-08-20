@@ -40,19 +40,23 @@ chrome.tabs.onUpdated.addListener(function (tabId, info, tab) {
             });
         }
 
-        if (patternData.jquery != false) {
-            //console.log('jquery execute!');
-            chrome.tabs.executeScript(tab.id, {
-                file: 'notmyscripts/jquery.js'
-            });
-        }
-
         if (patternData.code) {
             //console.log(patternData.code);
             chrome.tabs.executeScript(tab.id, {
                 code: patternData.code
             });
+            console.log(patternData.code + '   con');
         }
+
+        if (patternData.jquery != false) {
+            //console.log('jquery execute!');
+            chrome.tabs.executeScript(tab.id, {
+                file: 'notmyscripts/jquery.js'
+            });
+            console.log('jq con');
+        }
+
+
 
         if (patternData.notMyScripts && patternData.notMyScripts.length > 0) {
             //console.log(patternData.notMyScripts);
