@@ -1,16 +1,63 @@
 var badHosts = ["yabs.yandex.ru", "news.yandex.ru", "rostov.propartner.ru", "market.yandex.ru", "rostov.pulscen.ru", "rostov.tiu.ru", "rostov.blizko.ru", "rostov-na-donu.unibo.ru", "rostov-na-donu.dmir.ru", "rostovnadonu.flagma.ru", "rostov-na-donu.aport.ru", "www.rostov-na-donu.build2last.ru", "ru.wikipedia.org", "rostov.neobroker.ru", "www.rosrealt.ru", "rostovnadonu.irr.ru", "rostov.n1.ru", "rostov-na-donu.naydidom.com", "dom.mirkvartir.ru", "www.realtymag.ru", "www.grinas.ru", "zemlidona.ru", "www.avito.ru", "allorostov.ru", "www.yell.ru", "dic.academic.ru", "rostov.printura.ru", "rostov.4geo.ru", "rnd.spravker.ru"];
 
-insertStript();
 
-if ($("div").is("#mk")) {} else {
-    planirovka(badHosts);
+var analyzerCompetitors = {
+    buttonView: function () {
+        chrome.storage.local.get('seoChanger', function (result) {
+            sC = result['seoChanger'];
+
+            if (sC.planirovkaSession) return '<span>Сессия планировки запущена</span><button id="stopPS">Закончить сессию</button>';
+
+            return '<button id="startPS">Начать сессию</button>'
+        });
+    },
+};
+
+//analyzerCompetitors. =
+
+analyzerCompetitors.initialize = function () {
+    chrome.storage.local.get('seoChanger', function (result) {
+        sC = result['seoChanger'];
+
+        sC.planirovkaSession = {};
+
+        chrome.storage.local.set({
+            'seoChanger': sC
+        });
+    });
 }
 
 
-function planirovka(badHosts) {
+analyzerCompetitors.stopped = function () {
+    chrome.storage.local.get('seoChanger', function (result) {
+        sC = result['seoChanger'];
+
+        delete sC.planirovkaSession;
+
+        chrome.storage.local.set({
+            'seoChanger': sC
+        });
+    });
+}
+
+
+
+
+
+
+
+insertStript();
+
+if ($("div").is("#mk")) {} else {
+    planirovka(badHosts, analyzerCompetitors);
+}
+
+
+function planirovka(badHosts, analyzerCompetitors) {
+    console.log(analyzerCompetitors);
     var issue = determineIssue();
     deleteRigthColumn();
-    $('.serp-list').eq(1).append('<div id="mk" style="width:500px;">' + '<div class="bold-words-div">' + determineBoldWords(issue) + '</div>' + '<div class="issue">' + determineMainAndInternalPage(issue, badHosts) + '</div>' + '</div>');
+    $('.serp-list').eq(1).append('<div id="mk" style="width:500px;">' + analyzerCompetitors.buttonView + '<div class="bold-words-div">' + determineBoldWords(issue) + '</div>' + '<div class="issue">' + determineMainAndInternalPage(issue, badHosts) + '</div>' + '</div>');
 }
 
 function determineIssue() {
@@ -47,7 +94,9 @@ function determineBoldWords(issue) {
     t = t.substring(0, t.indexOf('яндекс') - 3);
     var result = '';
     badWords = t.split(' ');
+    badWords.push($('.region-change__link').html());
     badWords.push('ростов', 'ростове', 'ростова', 'дону', 'на', '... ');
+
 
     //issue = determineIssue();
     for (var j = 0; j < issue.length; j++) {
@@ -82,7 +131,7 @@ function determineBoldWords(issue) {
             }
 
         } catch (e) {
-            console.log('Ошибка ' + e);
+            console.log('Ошибка определителя подсвеченных слов в ' + j + ' сниппете - ' + e);
 
         }
 
@@ -103,7 +152,7 @@ function determineMainAndInternalPage(issue, badHosts) {
 
     for (i = 0; i < issue.length; i++) {
         urls = issue[i].getElementsByClassName('serp-item__title-link');
-        console.log(issue[i]);
+        //console.log(issue[i]);
         h2 = issue[i].getElementsByTagName('h2')[0];
         try {
             url = urls[0].href;
@@ -185,11 +234,11 @@ function insertStript() {
     head.appendChild(loadedJS);
 }
 
-function myConcat(main, additional) {
-    for (qqq = 0; qqq < additional.length; qqq++)
-        main.push(additional[qqq]);
-    return main;
-}
+//function myConcat(main, additional) {
+//    for (qqq = 0; qqq < additional.length; qqq++)
+//        main.push(additional[qqq]);
+//    return main;
+//}
 
 function isBadWithOtbrosSym(word, badWords, otbrosSym) {
     var needLength = word.length - otbrosSym;
@@ -209,3 +258,21 @@ function isBad(word, badWords) {
     }
     return false;
 }
+
+
+
+
+
+
+
+
+
+$(document).ready(function () {
+    $('#startPS').click(function () {
+        analyzerCompetitors.initialize();
+    });
+
+    $('#stopPS').click(function () {
+        analyzerCompetitors.stopped();
+    });
+});
