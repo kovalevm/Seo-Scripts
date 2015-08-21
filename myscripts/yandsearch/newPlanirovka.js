@@ -1,55 +1,12 @@
 var badHosts = ["yabs.yandex.ru", "news.yandex.ru", "rostov.propartner.ru", "market.yandex.ru", "rostov.pulscen.ru", "rostov.tiu.ru", "rostov.blizko.ru", "rostov-na-donu.unibo.ru", "rostov-na-donu.dmir.ru", "rostovnadonu.flagma.ru", "rostov-na-donu.aport.ru", "www.rostov-na-donu.build2last.ru", "ru.wikipedia.org", "rostov.neobroker.ru", "www.rosrealt.ru", "rostovnadonu.irr.ru", "rostov.n1.ru", "rostov-na-donu.naydidom.com", "dom.mirkvartir.ru", "www.realtymag.ru", "www.grinas.ru", "zemlidona.ru", "www.avito.ru", "allorostov.ru", "www.yell.ru", "dic.academic.ru", "rostov.printura.ru", "rostov.4geo.ru", "rnd.spravker.ru"];
 
-
-//
-
-var analyzerCompetitors = {
-    buttonView: function () {
-        var result = '';
-        chrome.storage.local.get('seoChanger', function (result) {
-            sC = result['seoChanger'];
-            con(sC);
-            if (sC.planirovkaSession) result = '<span>Сессия планировки запущена</span><button id="stopPS">Закончить сессию</button>';
-            else
-                result = '<button id="startPS">Начать сессию</button>'
-        });
-        con(result);
-        return result;
-    },
-
-    save: function (searchResults) {
-        $(searchResults).each(function() {
-            con(this);
-        })
-    }
-};
+var boldWords = [];
 
 
+var badWords = $('input[type="search"][aria-label="Запрос"]').val().split(' ');
+badWords.push($('.region-change__link').html());
+badWords.push('ростов', 'ростове', 'ростова', 'дону', 'на', '... ');
 
-analyzerCompetitors.initialize = function () {
-    chrome.storage.local.get('seoChanger', function (result) {
-        sC = result['seoChanger'];
-
-        sC.planirovkaSession = {};
-
-        chrome.storage.local.set({
-            'seoChanger': sC
-        });
-    });
-}
-
-
-analyzerCompetitors.stopped = function () {
-    chrome.storage.local.get('seoChanger', function (result) {
-        sC = result['seoChanger'];
-
-        delete sC.planirovkaSession;
-
-        chrome.storage.local.set({
-            'seoChanger': sC
-        });
-    });
-}
 
 
 function con(data) {
@@ -60,55 +17,61 @@ function con(data) {
 insertStript();
 
 if ($("div").is("#mk")) {} else {
-    planirovka(badHosts, analyzerCompetitors);
+    planirovka(badHosts,boldWords,badWords);
 }
 
 
-function planirovka(badHosts, analyzerCompetitors) {
-    console.log(analyzerCompetitors);
+function planirovka(badHosts,boldWords,badWords) {
+    //console.log(analyzerCompetitors);
     var searchResults = determineIssue();
 
-    analyzerCompetitors.save(searchResults);
+    //analyzerCompetitors.save(searchResults);
 
-    deleteRigthColumn();
+    //deleteRigthColumn();
+    determineData(searchResults,boldWords,badWords);
+    con('boldWords - ' + boldWords);
+//    con('badWords - ' + badWords);
 
-    $('.serp-list').eq(1).append('<div id="mk" style="width:500px;">' + analyzerCompetitors.buttonView() + '<div class="bold-words-div">' + determineBoldWords(searchResults) + '</div>' + '<div class="issue">' + determineMainAndInternalPage(searchResults, badHosts) + '</div>' + '</div>');
 }
 
 function determineIssue() {
-    //    var tempIssue = [];
-    //    var issue = [];
-    //    issueClassNameLength = 24;
-    //    blocks = document.getElementsByClassName('serp-block serp-block');
-    //    for (i = 0; i < blocks.length; i++) {
-    //        if (blocks[i].className.length === issueClassNameLength) {
-    //            tempIssue.push(document.getElementsByClassName(blocks[i].className));
-    //        }
-    //    }
-    //    for (i = 0; i < tempIssue.length; i++) {
-    //        issue = myConcat(issue, tempIssue[i][0].getElementsByClassName('serp-item'));
-    //    }
-    //    return issue;
     return $("div[data-bem*='serp-item\":{}']");
 }
 
-function deleteRigthColumn() {
-    try {
-        $('.serp-list[role="complementary"]').empty();
-    } catch (e) {
-        con('Ошибка при очистке правого сектора - ' + e);
-    }
+function determineData(searchResults,boldWords,badWords) {
+    $(searchResults).each(function () {
+
+        var title = $(this).find('h2');
+        var url = $(this).find('.serp-item__title-link');
+        var snippet = $(this).find('.serp-item__text');
+
+        determineBoldWordsInElement(title, boldWords,badWords);
+        determineBoldWordsInElement(snippet, boldWords,badWords);
+        //        con(title);
+        //        con(url);
+        //        con(snippet);
+        //        con('');
+    })
 }
 
-function determineBoldWords(issue) {
-//    var t = document.getElementsByTagName('title');
-//    t = t[0].innerHTML.toLowerCase();
-//    t = t.substring(0, t.indexOf('яндекс') - 3);
-    var searchQuery = $('input[type="search"][aria-label="Запрос"]').val();
-    var result = '';
-    badWords = searchQuery.split(' ');
-    badWords.push($('.region-change__link').html());
-    badWords.push('ростов', 'ростове', 'ростова', 'дону', 'на', '... ');
+function determineBoldWordsInElement(element, boldWords,badWords) {
+    $(element).find('b').each(function () {
+
+        var word = $(this).html().toLowerCase().replace('<wbr>', '');
+        if (isBadWithOtbrosSym(word, badWords, 2)) return true;
+        badWords.push(word);
+        boldWords.push(word);
+
+    })
+}
+
+function determineBoldWords() {
+
+    //    var searchQuery = $('input[type="search"][aria-label="Запрос"]').val();
+    //    var result = '';
+    //    badWords = searchQuery.split(' ');
+    //    badWords.push($('.region-change__link').html());
+    //    badWords.push('ростов', 'ростове', 'ростова', 'дону', 'на', '... ');
 
 
     for (var j = 0; j < issue.length; j++) {
@@ -226,6 +189,14 @@ function determineMainAndInternalPage(issue, badHosts) {
     return p1;
 }
 
+function deleteRigthColumn() {
+    try {
+        $('.serp-list[role="complementary"]').empty();
+    } catch (e) {
+        con('Ошибка при очистке правого сектора - ' + e);
+    }
+}
+
 function isMain(url) {
     if (url.indexOf('/') > 0) {
         if (url.indexOf('/') === url.length - 1) {
@@ -246,16 +217,17 @@ function insertStript() {
     head.appendChild(loadedJS);
 }
 
-//function myConcat(main, additional) {
-//    for (qqq = 0; qqq < additional.length; qqq++)
-//        main.push(additional[qqq]);
-//    return main;
-//}
+
 
 function isBadWithOtbrosSym(word, badWords, otbrosSym) {
+//    con(' ');
+//    con(word);
+//            con(badWords);
+//            con(' ');
     var needLength = word.length - otbrosSym;
     for (j = 0; j < badWords.length; j++) {
-        if (word.toLowerCase().substring(0, needLength) === badWords[j].toLowerCase().substring(0, needLength)) { // || word===traslit(badWords[j]))
+        if (word.toLowerCase().substring(0, needLength) === badWords[j].toLowerCase().substring(0, needLength)) {
+
             return true;
         }
     }
@@ -270,21 +242,3 @@ function isBad(word, badWords) {
     }
     return false;
 }
-
-
-
-
-
-
-
-
-
-//$(document).ready(function () {
-//    $('#startPS').click(function () {
-//        analyzerCompetitors.initialize();
-//    });
-//
-//    $('#stopPS').click(function () {
-//        analyzerCompetitors.stopped();
-//    });
-//});

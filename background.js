@@ -94,10 +94,16 @@ function determineRoutes(routes) {
     return routes = {
         'https*://yandex.ru/(yand)?search.*': {
             toggle: 'planirovka',
-            myScripts: ['yandsearch/planirovka.js'],
+            myScripts: ['yandsearch/newPlanirovka.js'],
             notMyScripts: ['punycode.js'],
             css: 'yandsearch/planirovka.css'
         },
+//        'https*://yandex.ru/(yand)?search.*': {
+//            toggle: 'planirovka',
+//            myScripts: ['yandsearch/planirovka.js'],
+//            notMyScripts: ['punycode.js'],
+//            css: 'yandsearch/planirovka.css'
+//        },
         'https*://www.liveinternet.ru/stat/.*/queries.html.*': {
             toggle: 'LIphrases',
             myScripts: ['liveinternet/queries.js'],
