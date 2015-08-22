@@ -3,12 +3,6 @@ var badHosts = ["yabs.yandex.ru", "news.yandex.ru", "rostov.propartner.ru", "mar
 var boldWords = [];
 
 
-var badWords = $('input[type="search"][aria-label="Запрос"]').val().split(' ');
-badWords.push($('.region-change__link').html());
-badWords.push('ростов', 'ростове', 'ростова', 'дону', 'на', '... ');
-
-
-
 function con(data) {
     console.log(data);
 }
@@ -17,113 +11,85 @@ function con(data) {
 insertStript();
 
 if ($("div").is("#mk")) {} else {
-    planirovka(badHosts,boldWords,badWords);
+    planirovka(badHosts);
 }
 
 
-function planirovka(badHosts,boldWords,badWords) {
+function planirovka(badHosts) {
     //console.log(analyzerCompetitors);
-    var searchResults = determineIssue();
+    var searchResults = $("div[data-bem*='serp-item\":{}']");
 
     //analyzerCompetitors.save(searchResults);
 
     //deleteRigthColumn();
-    determineData(searchResults,boldWords,badWords);
-    con('boldWords - ' + boldWords);
-//    con('badWords - ' + badWords);
+    var data = determineData(searchResults);
+    con(data);
+    //    con('badWords - ' + badWords);
 
 }
 
-function determineIssue() {
-    return $("div[data-bem*='serp-item\":{}']");
-}
 
-function determineData(searchResults,boldWords,badWords) {
+function determineData(searchResults) {
+
+    var data = {
+        boldWords: [],
+        badWords: [],
+        mainPageCount: 0,
+        internalPageCount: 0,
+        catalogPageCount: 0,
+        snippets: [],
+    };
+
+    data.badWords = $('input[type="search"][aria-label="Запрос"]').val().split(' ');
+    data.badWords.push($('.region-change__link').html());
+    data.badWords.push('ростов', 'ростове', 'ростова', 'дону', 'на', '... ');
+
     $(searchResults).each(function () {
 
         var title = $(this).find('h2');
         var url = $(this).find('.serp-item__title-link');
         var snippet = $(this).find('.serp-item__text');
 
-        determineBoldWordsInElement(title, boldWords,badWords);
-        determineBoldWordsInElement(snippet, boldWords,badWords);
+        //Ищем подсвеченные слова
+        data = determineBoldWordsInElements([title, snippet], data);
         //        con(title);
         //        con(url);
         //        con(snippet);
         //        con('');
+    });
+
+    return data;
+}
+
+
+
+
+function determineBoldWordsInElements(elements, data) {
+    $(elements).each(function () {
+        $(this).find('b').each(function () {
+
+            var word = $(this).html().toLowerCase().replace('<wbr>', '');
+            if (isBadWithOtbrosSym(word, data.badWords, 2)) return true;
+            data.badWords.push(word);
+            data.boldWords.push(word);
+
+        })
     })
+    return data;
 }
 
-function determineBoldWordsInElement(element, boldWords,badWords) {
-    $(element).find('b').each(function () {
-
-        var word = $(this).html().toLowerCase().replace('<wbr>', '');
-        if (isBadWithOtbrosSym(word, badWords, 2)) return true;
-        badWords.push(word);
-        boldWords.push(word);
-
-    })
-}
-
-function determineBoldWords() {
-
-    //    var searchQuery = $('input[type="search"][aria-label="Запрос"]').val();
-    //    var result = '';
-    //    badWords = searchQuery.split(' ');
-    //    badWords.push($('.region-change__link').html());
-    //    badWords.push('ростов', 'ростове', 'ростова', 'дону', 'на', '... ');
 
 
-    for (var j = 0; j < issue.length; j++) {
+function determineMainAndInternalPage(title, url, data) {
 
-        var h2 = issue[j].getElementsByTagName('h2')[0];
-        var b = h2.getElementsByTagName('b');
-        for (i = 0; i < b.length - 1; i++) {
-            var s = b[i].innerHTML.toLowerCase().replace('<wbr>', '');
-            //			if (s.length >7) {
-            //				if ( isBadWithOtbrosSym(s,badWords, 4)) continue;
-            //			} else {
-            if (isBadWithOtbrosSym(s, badWords, 2)) continue;
-            //			}
-            badWords.push(s);
-            result += s + ", ";
-        }
+    var snippet = {};
+    snippet.isBadPage = false;
+    snippet.main = false;
 
-        try {
-            //console.log(issue);
-            var snippet = issue[j].getElementsByClassName('serp-item__text')[0];
-            //console.log(snippet);
-            var b = snippet.getElementsByTagName('b');
-            for (i = 0; i < b.length - 1; i++) {
-                var s = b[i].innerHTML.toLowerCase().replace('<wbr>', '');
-                //			if (s.length >7) {
-                //				if ( isBadWithOtbrosSym(s,badWords, 4)) continue;
-                //			} else {
-                if (isBadWithOtbrosSym(s, badWords, 2)) continue;
-                //			}
-                badWords.push(s);
-                result += s + ", ";
-            }
+    isBadPage = isBad(urls[0].hostname, badHosts) ? true : false;
+    catalogPageCount = isBadPage ? catalogPageCount + 1 : catalogPageCount;
+    humanUrl = url.replace(/http[s]*:\/\/(www.)*/g, '');
 
-        } catch (e) {
-            console.log('Ошибка определителя подсвеченных слов в ' + j + ' сниппете - ' + e);
-
-        }
-
-
-    }
-    return '<h3><em>Подсвеченные слова:</em></h3><p class="bold-words">' + result.substring(0, result.length - 2) + '</p>';
-}
-
-function determineMainAndInternalPage(issue, badHosts) {
-    p = '<ol style="padding-left: 15px;">';
-    p1 = '';
-    mainPageCount = 0;
-    internalPageCount = 0;
-    catalogPageCount = 0;
-    //issue = determineIssue();
-    var isBadPage = false;
-    page = '';
 
     for (i = 0; i < issue.length; i++) {
         urls = issue[i].getElementsByClassName('serp-item__title-link');
@@ -137,9 +103,7 @@ function determineMainAndInternalPage(issue, badHosts) {
             continue;
         }
 
-        isBadPage = isBad(urls[0].hostname, badHosts) ? true : false;
-        catalogPageCount = isBadPage ? catalogPageCount + 1 : catalogPageCount;
-        humanUrl = url.replace(/http[s]*:\/\/(www.)*/g, '');
+
 
         page = isMain(humanUrl) ? 'Гл' : 'Вн';
         page = isBadPage ? 'Каталог' : page;
@@ -220,10 +184,10 @@ function insertStript() {
 
 
 function isBadWithOtbrosSym(word, badWords, otbrosSym) {
-//    con(' ');
-//    con(word);
-//            con(badWords);
-//            con(' ');
+    //    con(' ');
+    //    con(word);
+    //            con(badWords);
+    //            con(' ');
     var needLength = word.length - otbrosSym;
     for (j = 0; j < badWords.length; j++) {
         if (word.toLowerCase().substring(0, needLength) === badWords[j].toLowerCase().substring(0, needLength)) {
