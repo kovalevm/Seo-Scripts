@@ -21,9 +21,10 @@ function planirovka(badHosts) {
 
     //analyzerCompetitors.save(searchResults);
 
-    //deleteRigthColumn();
+    deleteRigthColumn();
     var data = determineData(searchResults);
     con(data);
+    $('.serp-list[role="complementary"]').append( template(data) );
     //    con('badWords - ' + badWords);
 
 }
@@ -47,15 +48,17 @@ function determineData(searchResults) {
     $(searchResults).each(function () {
 
         var title = $(this).find('h2');
-        var url = $(this).find('.serp-item__title-link');
+        var url = $(this).find('.serp-item__title-link').attr('href');
         var snippet = $(this).find('.serp-item__text');
 
         //Ищем подсвеченные слова
         data = determineBoldWordsInElements([title, snippet], data);
+        data = determineMainAndInternalPage(title, url, data);
         //        con(title);
         //        con(url);
         //        con(snippet);
         //        con('');
+
     });
 
     return data;
@@ -83,75 +86,35 @@ function determineBoldWordsInElements(elements, data) {
 function determineMainAndInternalPage(title, url, data) {
 
     var snippet = {};
-    snippet.isBadPage = false;
-    snippet.main = false;
-
-    isBadPage = isBad(urls[0].hostname, badHosts) ? true : false;
-    catalogPageCount = isBadPage ? catalogPageCount + 1 : catalogPageCount;
-    humanUrl = url.replace(/http[s]*:\/\/(www.)*/g, '');
+    snippet.title = $(title).text();
+    snippet.humanUrl = url.replace(/http[s]*:\/\/(www.)*/g, '');
+    snippet.url = getLocation(url);
 
 
-    for (i = 0; i < issue.length; i++) {
-        urls = issue[i].getElementsByClassName('serp-item__title-link');
-        //console.log(issue[i]);
-        h2 = issue[i].getElementsByTagName('h2')[0];
-        try {
-            url = urls[0].href;
+    snippet.isBadPage = isBad(snippet.url.hostname, badHosts) ? true : false;
+    /**/
+    data.catalogPageCount = snippet.isBadPage ? data.catalogPageCount + 1 : data.catalogPageCount;
 
-        } catch (e) {
-            console.log('Ошибка ' + e);
-            continue;
-        }
+    snippet.main = isMain(snippet.humanUrl) ? true : false;
 
-
-
-        page = isMain(humanUrl) ? 'Гл' : 'Вн';
-        page = isBadPage ? 'Каталог' : page;
-        if (urls[0].hostname === "ru.wikipedia.org") page = 'Википедия'
-        if (!isBadPage) {
-            if (page === 'Гл') {
-                mainPageCount++;
-            } else {
-                internalPageCount++;
-            }
-        } else {
-
-        }
-        humanUrl = (humanUrl.length > 50) ? humanUrl.substring(0, 50) + "..." : humanUrl;
-        humanUrl = (humanUrl.lastIndexOf("/") === humanUrl.length - 1) ? humanUrl.substring(0, url.length - 1) : humanUrl;
-
-        //li
-        p += '<li ';
-        p += isBadPage ? 'class="bad-li-ol li-ol"' : 'class="li-ol"';
-        p += '>';
-
-        p += '<h3>' + h2.innerText + '</h3>';
-        //checkbox
-        p += '<input type="checkbox" class="checkbox-ol"';
-        p += !isBadPage ? 'checked' : '';
-        p += '>'
-        p += page + ' - ' + '<a class="a-ol" target="_blank" href="' + url + '">';
-
-
-        if (humanUrl.indexOf('/') > -1) {
-            p += punycode.toUnicode(humanUrl.substring(0, humanUrl.indexOf('/'))) + humanUrl.substring(humanUrl.indexOf('/'));
-        } else {
-            p += punycode.toUnicode(humanUrl);
-        }
-
-
-
-        p += '</a></li>'
+    if (!snippet.isBadPage) {
+        if (snippet.main) data.mainPageCount++;
+        else data.internalPageCount++;
     }
-    p += '</ol>';
-    p1 += '<br /><span>Каталогов: ' + catalogPageCount + '</span><br />';
-    p1 += '<span>Главная/Внутренная: ' + mainPageCount + '/' + internalPageCount + '</span>';
-    //		p +=  '<br />';
-    p += '<button type="button" id="btnOpenIssueLinks" onclick="openTabs();">Открыть отмеченные страницы</button>';
 
-    p1 += p;
-    return p1;
+    snippet.humanUrl = (snippet.humanUrl.length > 50) ? snippet.humanUrl.substring(0, 50) + "..." : snippet.humanUrl;
+    //humanUrl = (humanUrl.lastIndexOf("/") === humanUrl.length - 1) ? humanUrl.substring(0, url.length - 1) : humanUrl;
+    if (snippet.humanUrl.indexOf('/') > -1) {
+        snippet.humanUrl = punycode.toUnicode(snippet.humanUrl.substring(0, snippet.humanUrl.indexOf('/'))) + snippet.humanUrl.substring(snippet.humanUrl.indexOf('/'));
+    } else {
+        snippet.humanUrl = punycode.toUnicode(snippet.humanUrl);
+    }
+
+    data.snippets.push(snippet);
+    return data;
 }
+
+
 
 function deleteRigthColumn() {
     try {
@@ -184,10 +147,6 @@ function insertStript() {
 
 
 function isBadWithOtbrosSym(word, badWords, otbrosSym) {
-    //    con(' ');
-    //    con(word);
-    //            con(badWords);
-    //            con(' ');
     var needLength = word.length - otbrosSym;
     for (j = 0; j < badWords.length; j++) {
         if (word.toLowerCase().substring(0, needLength) === badWords[j].toLowerCase().substring(0, needLength)) {
@@ -205,4 +164,48 @@ function isBad(word, badWords) {
         }
     }
     return false;
+}
+
+function getLocation (href) {
+    var l = document.createElement("a");
+    l.href = href;
+    return l;
+};
+
+function template(data) {
+    var s = '\
+<div id="mk" style="width:500px;">\
+    <div class="bold-words-div">\
+        <h3><em>Подсвеченные слова:</em></h3>\
+        <p class="bold-words">' + data.boldWords + '</p>\
+    </div>\
+    <div class="issue">\
+        <br><span>Каталогов:' + data.catalogPageCount + '</span>\
+        <br><span>Главная/Внутренная:' + data.mainPageCount + '/' + data.internalPageCount + '</span>\
+        <ol style="padding-left: 15px;">';
+
+    $.each(data.snippets,
+        function (i, snippet) {
+            s += '\
+            <li class="';
+            if (snippet.isBadPage) s += 'bad-li-ol ';
+            s += 'li-ol">\
+                <h3>' + snippet.title + '</h3>\
+                <input type="checkbox" class="checkbox-ol"';
+            if (!snippet.isBadPage) s += 'checked';
+            s += '>'
+            if (snippet.main) s += 'Гл';
+            else s += 'Вн';
+            s += '- <a class="a-ol" target="_blank" href="' + snippet.url.href + '">' + snippet.humanUrl + '</a>\
+            </li>';
+
+        });
+
+
+    s += '</ol>\
+        <button type="button" id="btnOpenIssueLinks" onclick="openTabs();">Открыть отмеченные страницы</button>\
+    </div>\
+</div>';
+
+    return s;
 }
