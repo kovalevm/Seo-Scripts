@@ -1,12 +1,5 @@
 var badHosts = ["yabs.yandex.ru", "news.yandex.ru", "rostov.propartner.ru", "market.yandex.ru", "rostov.pulscen.ru", "rostov.tiu.ru", "rostov.blizko.ru", "rostov-na-donu.unibo.ru", "rostov-na-donu.dmir.ru", "rostovnadonu.flagma.ru", "rostov-na-donu.aport.ru", "www.rostov-na-donu.build2last.ru", "ru.wikipedia.org", "rostov.neobroker.ru", "www.rosrealt.ru", "rostovnadonu.irr.ru", "rostov.n1.ru", "rostov-na-donu.naydidom.com", "dom.mirkvartir.ru", "www.realtymag.ru", "www.grinas.ru", "zemlidona.ru", "www.avito.ru", "allorostov.ru", "www.yell.ru", "dic.academic.ru", "rostov.printura.ru", "rostov.4geo.ru", "rnd.spravker.ru"];
 
-var boldWords = [];
-
-
-function con(data) {
-    console.log(data);
-}
-
 
 insertStript();
 
@@ -135,7 +128,16 @@ function isMain(url) {
 
 function insertStript() {
     var loadedJS = document.createElement('script');
-    loadedJS.text = "function openTabs() {  	var a = document.getElementsByClassName('a-ol'); 	var ck = document.getElementsByClassName('checkbox-ol'); 	for (j=0; j < ck.length; j++) { 		if (ck[j].checked===true) { 			window.open(a[j] , '_blank'); 		} 	} }";
+    loadedJS.text = "\
+    function openTabs() {\
+        var a = document.getElementsByClassName('a-ol');\
+        var ck = document.getElementsByClassName('checkbox-ol');\
+        for (j=0; j < ck.length; j++) {\
+            if (ck[j].checked===true) {\
+                window.open(a[j] , '_blank');\
+            }\
+        }\
+    }";
 
     loadedJS.type = "text/javascript";
     loadedJS.language = "javascript";
@@ -208,4 +210,8 @@ function template(data) {
 </div>';
 
     return s;
+}
+
+function con(data) {
+    console.log(data);
 }

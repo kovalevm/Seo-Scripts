@@ -1,7 +1,7 @@
 var seoChanger = {};
 var routes = {}
-chrome.storage.local.get('seoChanger', function (result) {
-    seoChanger = result['seoChanger'];
+chrome.storage.local.get('seoChanger.switches', function (result) {
+    seoChanger = result['seoChanger.switches'];
     if (!!(seoChanger)) {
         seoChanger = JSON.parse(seoChanger);
     }
@@ -11,7 +11,7 @@ chrome.storage.local.get('seoChanger', function (result) {
 
 chrome.storage.onChanged.addListener(function (changes, areaName) {
     //console.log(changes);
-    if (changes['seoChanger']) seoChanger = changes['seoChanger'].newValue;
+    if (changes['seoChanger.switches']) seoChanger = changes['seoChanger.switches'].newValue;
     seoChanger = JSON.parse(seoChanger);
     routes = determineRoutes(routes);
 });

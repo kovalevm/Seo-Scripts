@@ -1,12 +1,14 @@
 var browser = get_name_browser();
-console.log(browser);
-chrome.storage.local.get('seoChanger', function(result) {
-	var seoChanger = result['seoChanger'];
+//console.log(browser);
+chrome.storage.local.get('seoChanger.switches', function(result) {
+	var seoChanger = result['seoChanger.switches'];
 	if ($.isEmptyObject(seoChanger)) {
 		console.log('seoChanger is empty');
 		seoChanger = null;
 	} else {
 		seoChanger = JSON.parse(seoChanger);
+        //seoChanger = seoChanger.switches;
+        console.log(seoChanger);
 		jQuery.each(seoChanger, function(key, value) {
 			console.log(key + " : " + value);
 			if ((value == true) || (value == false)) document.getElementById(key).checked= value ? true : false;
@@ -33,7 +35,7 @@ $('input').click(function(){
 
 	}
 	seoChanger = JSON.stringify(seoChanger);
-	chrome.storage.local.set({'seoChanger': seoChanger})
+	chrome.storage.local.set({'seoChanger.switches': seoChanger})
 });
 
 function get_name_browser(){
@@ -52,3 +54,8 @@ function get_name_browser(){
     // для популярных браузеров
     return 'Не определен';
 }
+
+$('#cleanBD').click(function () {
+
+    chrome.storage.local.remove('seoChanger.switches', function () {});
+});

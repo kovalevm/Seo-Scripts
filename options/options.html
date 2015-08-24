@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Настройка Seo Scripts</title>
+
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="../notmyscripts/jquery.js"></script>
+    <script src="../notmyscripts/bootstrap.min.js"></script>
+    <script src="options.js"></script>
+    <style>
+        .container {
+            max-width: 800px;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <h3>Редактировать список плохих сайтов</h3>
+        <table class="table" id="badHostTable">
+            <tbody>
+                <tr>
+                    <th>id</th>
+                    <th>Сайт</th>
+                    <th>Ярлык</th>
+                    <th>Дата добавления</th>
+
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-success" id="updateBadHost">Обновить</button>
+        <span style="    float: right;">
+        <button type="button" data-toggle="modal" data-target="#addSiteModal" class="btn btn-primary">Добавить сайт</button>
+        <button type="button" data-toggle="modal" data-target="#deleteSiteModal" class="btn btn-danger">Удалить сайт</button>
+        </span>
+
+    </div>
+
+
+
+    <div class="modal fade" id="addSiteModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="http://strikerdeveloper.myjino.ru/badHosts.php" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Заявка на добавление сайта</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div>
+                            <input type="hidden" name="action" value="add">
+                            <h3>Заявка на добавление сайта</h3>
+                            <div class="form-group">
+                                <label for="hostname">Сайт (без http и слешей)</label>
+                                <textarea name="hostname" class="form-control" placeholder="Например: google.com"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="comment">Комментарий</label>
+                                <input name="comment" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-Mail</label>
+                                <input name="email" type="email" class="form-control">
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Отправить заявку</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="deleteSiteModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="http://strikerdeveloper.myjino.ru/badHosts.php" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Заявка на удаление сайта</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div>
+                            <input type="hidden" name="action" value="delete">
+                            <div class="form-group">
+                                <label for="siteID">id</label>
+                                <input name="siteID" width="100" class="form-control" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="comment">Причина</label>
+                                <input name="comment" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-Mail</label>
+                                <input name="email" type="email" class="form-control">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Отправить заявку</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</body>
+
+</html>
