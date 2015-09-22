@@ -2,15 +2,19 @@
 	<head>
 	<title>Term plus word</title>
 		<meta charset = "utf-8">
+		<link rel="stylesheet" href="jquery-linedtextarea/jquery-linedtextarea.css">
+
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="jquery-linedtextarea/jquery-linedtextarea.js"></script>
 	</head>
 	<body>
 
 
 		<form action="" name="loandata">
 			<table>
-				<tr><td><textarea name="terms" cols="70" rows="35"></textarea></td>
+				<tr><td><textarea class="lined" name="terms" cols="70" rows="35"></textarea></td>
 					<td></td>
-					<td><textarea id="termsResult" cols="70" rows="35"></textarea></td>
+					<td><textarea class="lined" id="termsResult" cols="70" rows="35"></textarea></td>
 				</tr>
 			</table>
 			<table>
@@ -23,12 +27,19 @@
 			</table>
 		</form>
 		<table>
-				<tr><td><textarea id="transSource" cols="55" rows="10">Как правильно выбрать металлопрокат?</textarea></td>
+				<tr><td><textarea  id="transSource" cols="55" rows="10">Как правильно выбрать металлопрокат?</textarea></td>
 					<td></td>
 					<td><textarea id="transResult" cols="55" rows="10"></textarea></td>
 				</tr>
 			</table>
 			<input  style="margin-bottom:30px/*height:100%; width:100%*/" type="button" id="transBtn" value="В транслит">
+			<script>
+$(function() {
+	$(".lined").linedtextarea(
+		{selectedLine: 1}
+	);
+});
+</script>
 			<script type="text/javascript" src="tpwscript.js"></script>
 	</body>
 </html>

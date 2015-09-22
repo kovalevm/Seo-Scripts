@@ -21,9 +21,15 @@ for (j = 0; j < words.length; j++)
 		}
 		termsResult.value += arr[i].toLowerCase() + " " + words[j].toLowerCase() + "\n";
 	}
-	if (j < words.length -1) termsResult.value += j + "00000000000000000000000000000000000000000000000\n";
+	if (j < words.length -1) termsResult.value += j + "000" + getRandomInt(1,100) + "000000000000000" + + getRandomInt(1,100) +"00000000000000000000000\n";
 }
 }
+
+function getRandomInt(min, max)
+{
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 
 function traslit(text) {
 text = text.toLowerCase();

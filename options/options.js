@@ -33,4 +33,3 @@ function buildBadListTable() {
         $('#badHoststable>tbody').append( s );
     });
 }
-
