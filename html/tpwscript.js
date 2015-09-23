@@ -2,17 +2,17 @@ function adding() {
     function replaceAll(find, replace, str) {
         return str.replace(new RegExp(find, 'g'), replace);
     }
-    var terms = document.loandata.terms.value;
+    var terms = document.loandata.terms.value;//.replace(/\n+/g,'\n');
 
     var addWords = document.loandata.addWord.value;
     var termsResult = document.getElementById("termsResult");
     termsResult.value = '';
-    if (terms.indexOf('\n\n') > -1) {
-        $("#delEmptyLines").removeClass('hide');
-        return
-    } else {
-        $("#delEmptyLines").addClass('hide');
-    }
+//    if (terms.indexOf('\n\n') > -1) {
+//        $("#delEmptyLines").removeClass('hide');
+//        return
+//    } else {
+//        $("#delEmptyLines").addClass('hide');
+//    }
     addWords = replaceAll(', ', ',', addWords);
     var spliter = ",";
     var arr = terms.split("\n");
@@ -23,6 +23,7 @@ function adding() {
 
     for (j = 0; j < words.length; j++) {
         for (i = 0; i < arr.length; i++) {
+            if (arr[i].length == 0) continue;
             //console.log(arr[i].toLowerCase().indexOf(words[j].toLowerCase()));
             if ((words[j] != '') && (arr[i].toLowerCase().indexOf(words[j].toLowerCase()) > -1)) {
                 //console.log('1');
@@ -60,7 +61,7 @@ function adding() {
         $("#errorMessage").addClass('hide');
     }
 
-    if (errorMaxWordLines != null) {
+    if (errorMaxWordLines.length != 0) {
        $("#errorMaxWord").removeClass('hide');
         $("#errorMaxWordLines").text(errorMaxWordLines);
     } else {
