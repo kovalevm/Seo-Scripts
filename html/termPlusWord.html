@@ -1,45 +1,64 @@
 <html>
-	<head>
-	<title>Term plus word</title>
-		<meta charset = "utf-8">
-		<link rel="stylesheet" href="jquery-linedtextarea/jquery-linedtextarea.css">
 
-		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-		<script src="jquery-linedtextarea/jquery-linedtextarea.js"></script>
-	</head>
-	<body>
+<head>
+    <title>Term plus word</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="jquery-linedtextarea/jquery-linedtextarea.css">
+    <link rel="stylesheet" href="termPW.css">
 
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="jquery-linedtextarea/jquery-linedtextarea.js"></script>
+</head>
 
-		<form action="" name="loandata">
-			<table>
-				<tr><td><textarea class="lined" name="terms" cols="70" rows="35"></textarea></td>
-					<td></td>
-					<td><textarea class="lined" id="termsResult" cols="70" rows="35"></textarea></td>
-				</tr>
-			</table>
-			<table>
-				<tr>
-					<td>Add words separated by ",": 
-						<textarea cols="110" rows="5" type="text" name="addWord" >,Ростов, в Ростове, Ростов на дону, в Ростове на Дону</textarea></td>
-					<td></td>
-					<td style='border:solid 0px; width:75px;'><input  style="height:100%; width:100%" size="50" type="button" id="goButton" value="GO!"></td>
-				</tr>
-			</table>
-		</form>
-		<table>
-				<tr><td><textarea  id="transSource" cols="55" rows="10">Как правильно выбрать металлопрокат?</textarea></td>
-					<td></td>
-					<td><textarea id="transResult" cols="55" rows="10"></textarea></td>
-				</tr>
-			</table>
-			<input  style="margin-bottom:30px/*height:100%; width:100%*/" type="button" id="transBtn" value="В транслит">
-			<script>
-$(function() {
-	$(".lined").linedtextarea(
-		{selectedLine: 1}
-	);
-});
-</script>
-			<script type="text/javascript" src="tpwscript.js"></script>
-	</body>
+<body>
+    <h3 id="delEmptyLines"class="blink1 hide">Удалите пустые строки!</h3>
+    <h3 id="errorMessage" class="blink1 hide">Добавляемые слова встречаются в строках:<span id="errorLines"></span></h3>
+    <h3>Ограничение слов для КК: <input type="text" id="kkMaxWord" value="10">
+    <span id="errorMaxWord" class="blink1 hide">Превысили лимит фразы в строках: <span id="errorMaxWordLines" ></span></span> </h3>
+    <form action="" name="loandata">
+        <table>
+            <tr>
+                <td>
+                    <textarea class="lined" name="terms" cols="70" rows="35"></textarea>
+                </td>
+                <td></td>
+                <td>
+                    <textarea class="lined" id="termsResult" cols="70" rows="35"></textarea>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>Add words separated by ",":
+                    <textarea cols="110" rows="5" type="text" name="addWord">,Ростов, в Ростове, Ростов на дону, в Ростове на Дону</textarea>
+                </td>
+                <td></td>
+                <td style='border:solid 0px; width:75px;'>
+                    <input style="height:100%; width:100%" size="50" type="button" id="goButton" value="GO!">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <table>
+        <tr>
+            <td>
+                <textarea id="transSource" cols="55" rows="10">Как правильно выбрать металлопрокат?</textarea>
+            </td>
+            <td></td>
+            <td>
+                <textarea id="transResult" cols="55" rows="10"></textarea>
+            </td>
+        </tr>
+    </table>
+    <input style="margin-bottom:30px/*height:100%; width:100%*/" type="button" id="transBtn" value="В транслит">
+    <script>
+        $(function() {
+            $(".lined").linedtextarea({
+                selectedLine: 1
+            });
+        });
+    </script>
+    <script type="text/javascript" src="tpwscript.js"></script>
+</body>
+
 </html>

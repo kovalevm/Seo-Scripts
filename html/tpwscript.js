@@ -3,27 +3,71 @@ function adding() {
         return str.replace(new RegExp(find, 'g'), replace);
     }
     var terms = document.loandata.terms.value;
+
     var addWords = document.loandata.addWord.value;
     var termsResult = document.getElementById("termsResult");
     termsResult.value = '';
+    if (terms.indexOf('\n\n') > -1) {
+        $("#delEmptyLines").removeClass('hide');
+        return
+    } else {
+        $("#delEmptyLines").addClass('hide');
+    }
     addWords = replaceAll(', ', ',', addWords);
     var spliter = ",";
     var arr = terms.split("\n");
     var words = addWords.split(spliter);
+    var errorFlag = false;
+    var errorlines = []; //Добавляемые слова встречаются в строках: ';
+    var errorMaxWordLines = [];
 
     for (j = 0; j < words.length; j++) {
         for (i = 0; i < arr.length; i++) {
+            //console.log(arr[i].toLowerCase().indexOf(words[j].toLowerCase()));
+            if ((words[j] != '') && (arr[i].toLowerCase().indexOf(words[j].toLowerCase()) > -1)) {
+                //console.log('1');
+                errorFlag = true;
+                errorMessage += errorlines.push(i + 1);
+            }
+
+
             arr[i] = $.trim(arr[i]);
-            //		while(arr[i][arr[i].length -1] == " ")
-            //		{
-            //			arr[i] = arr[i].substring(0, arr[i].length - 1);
-            //		}
-            termsResult.value += arr[i].toLowerCase() + " " + words[j].toLowerCase() + "\n";
+
+            var frase = arr[i].toLowerCase() + " " + words[j].toLowerCase();
+            if (frase.match(/\S+?\s|\S+?$/g).length > $('#kkMaxWord').val()) {
+               errorMaxWordLines.push((i+1) + (arr.length * j) + j);
+            }
+            termsResult.value += frase + "\n";
         }
-        if (j < words.length - 1) termsResult.value += j + "000" + getRandomInt(1, 100) + "000000000000000" + +getRandomInt(1, 100) + "00000000000000000000000\n";
+        if (j < words.length - 1)
+            termsResult.value += j + "000" + getRandomInt(1, 100) + "000000000000000" + +getRandomInt(1, 100) + "00000000000000000000000\n";
     }
     termsResult.value = termsResult.value.substring(0, termsResult.value.length - 1);
-   $(termsResult).focus().setCursorPosition($(termsResult).val().length);
+
+    var i = arr.length;
+    errorlines.sort();
+
+    while (i--) {
+        if (errorlines[i] == errorlines[i - 1]) {
+            errorlines.splice(i, 1);
+        }
+    }
+
+    if (errorFlag) {
+        $("#errorMessage").removeClass('hide');
+        $("#errorLines").text(errorlines);
+    } else {
+        $("#errorMessage").addClass('hide');
+    }
+
+    if (errorMaxWordLines != null) {
+       $("#errorMaxWord").removeClass('hide');
+        $("#errorMaxWordLines").text(errorMaxWordLines);
+    } else {
+        $("#errorMaxWord").addClass('hide');
+    }
+
+    $("#termsResult").focus();//.setCursorPosition($(termsResult).val().length);
 
 }
 
@@ -93,10 +137,10 @@ function trans() {
 document.getElementById("goButton").addEventListener("click", adding);
 document.getElementById("transBtn").addEventListener("click", trans);
 
-for (var j = 1; j < 6; j++) {
-    for (i = 1; i < 5; i++) {
-        document.getElementsByName(('m' + i + j))[0].value = '';
-        if (i == 1) document.getElementsByName(('r' + i))[0].value = '';
-    }
-    document.getElementsByName(('fx' + j))[0].value = '';
-};
+//for (var j = 1; j < 6; j++) {
+//    for (i = 1; i < 5; i++) {
+//        document.getElementsByName(('m' + i + j))[0].value = '';
+//        if (i == 1) document.getElementsByName(('r' + i))[0].value = '';
+//    }
+//    document.getElementsByName(('fx' + j))[0].value = '';
+//};
