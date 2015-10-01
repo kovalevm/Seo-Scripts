@@ -47,10 +47,6 @@ function determineData(searchResults) {
         //Ищем подсвеченные слова
         data = determineBoldWordsInElements([title, snippet], data);
         data = determineMainAndInternalPage(title, url, data);
-        //        con(title);
-        //        con(url);
-        //        con(snippet);
-        //        con('');
 
     });
 
@@ -80,12 +76,13 @@ function determineMainAndInternalPage(title, url, data) {
 
     var snippet = {};
     snippet.title = $(title).text();
-    snippet.humanUrl = url.replace(/http[s]*:\/\/(www.)*/g, '');
     snippet.url = getLocation(url);
-
+    snippet.humanUrl = punycode.toUnicode(snippet.url.hostname);
+    snippet.humanUrl += snippet.url.pathname + snippet.url.search + snippet.url.hash;
+    snippet.humanUrl = (snippet.humanUrl.length > 50) ? snippet.humanUrl.substring(0, 50) + "..." : snippet.humanUrl;
 
     snippet.isBadPage = isBad(snippet.url.hostname, badHosts) ? true : false;
-    /**/
+
     data.catalogPageCount = snippet.isBadPage ? data.catalogPageCount + 1 : data.catalogPageCount;
 
     snippet.main = isMain(snippet.humanUrl) ? true : false;
@@ -95,13 +92,13 @@ function determineMainAndInternalPage(title, url, data) {
         else data.internalPageCount++;
     }
 
-    snippet.humanUrl = (snippet.humanUrl.length > 50) ? snippet.humanUrl.substring(0, 50) + "..." : snippet.humanUrl;
-    //humanUrl = (humanUrl.lastIndexOf("/") === humanUrl.length - 1) ? humanUrl.substring(0, url.length - 1) : humanUrl;
-    if (snippet.humanUrl.indexOf('/') > -1) {
-        snippet.humanUrl = punycode.toUnicode(snippet.humanUrl.substring(0, snippet.humanUrl.indexOf('/'))) + snippet.humanUrl.substring(snippet.humanUrl.indexOf('/'));
-    } else {
-        snippet.humanUrl = punycode.toUnicode(snippet.humanUrl);
-    }
+
+    //snippet.humanUrl = (snippet.humanUrl.lastIndexOf("/") === snippet.humanUrl.length - 1) ? snippet.humanUrl.substring(0, url.length - 1) : humanUrl;
+//    if (snippet.humanUrl.indexOf('/') > -1) {
+//        snippet.humanUrl = punycode.toUnicode(snippet.humanUrl.substring(0, snippet.humanUrl.indexOf('/'))) + snippet.humanUrl.substring(snippet.humanUrl.indexOf('/'));
+//    } else {
+//        snippet.humanUrl = punycode.toUnicode(snippet.humanUrl);
+//    }
 
     data.snippets.push(snippet);
     return data;
