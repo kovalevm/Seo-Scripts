@@ -18,11 +18,10 @@ chrome.storage.onChanged.addListener(function (changes, areaName) {
 
 
 chrome.tabs.onUpdated.addListener(function (tabId, info, tab) {
-    if (tab.status === 'loading') return;
-    console.log('backgroung.js START on ' + tab.url);
+    //if (tab.status === 'loading') return;
     var patterns = [];
     if ((patterns = determinePattern(tab.url)).length === 0) return;
-    //console.log(patterns);
+    console.log('backgroung.js START on ' + tab.url);
     console.log('Мы попали под паттерны - ' + patterns);
     for (var i = 0; i < patterns.length; i++) {
 
@@ -32,7 +31,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, info, tab) {
         //console.log(seoChanger[patternData.toggle]);
         if (!seoChanger[patternData.toggle]) continue;
 
-        console.log('pattern - ' + patterns[i] + ' with toggle - ' + patternData.toggle);
+        //console.log('pattern - ' + patterns[i] + ' with toggle - ' + patternData.toggle);
         if (patternData.css) {
             //console.log(patternData.css);
             chrome.tabs.insertCSS(tab.id, {
@@ -45,7 +44,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, info, tab) {
             chrome.tabs.executeScript(tab.id, {
                 code: patternData.code
             });
-            console.log(patternData.code + '   con');
+            //console.log(patternData.code + '   connect');
         }
 
         if (patternData.jquery != false) {
@@ -53,7 +52,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, info, tab) {
             chrome.tabs.executeScript(tab.id, {
                 file: 'notmyscripts/jquery.js'
             });
-            console.log('jq con');
+            //console.log('Jquery connect');
         }
 
 
@@ -71,12 +70,12 @@ chrome.tabs.onUpdated.addListener(function (tabId, info, tab) {
             //console.log(patternData.myScripts[script]);
             chrome.tabs.executeScript(tab.id, {
                 file: 'myscripts/' + patternData.myScripts[script],
-                runAt: "document_end"
+                //runAt: "document_end"
             });
         }
     }
     console.log('backgroung.js END on ' + tab.url);
-    console.log(' ');
+    //console.log(' ');
 });
 
 

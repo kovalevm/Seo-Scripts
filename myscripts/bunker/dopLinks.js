@@ -1,5 +1,5 @@
-$(document).ready(function () {
-    if (!$("mkLinks").is("#mkLinks")) {
+//$(document).ready(function () {
+    if (!$("mkLinks").is("#mkLinks") && $(".links_adm")) {
         $(".links_adm").prepend('<mkLinks id="mkLinks"><a href="customer.php?type=reporttable&amp;view=my">Отчеты</a> |\
         <span>Клиенты</span>\
         <a class="clientsPage" href="' + clientsLink(bunLogin,1) + '">1</a>\
@@ -22,7 +22,7 @@ $(document).ready(function () {
             return '/customer.php?type=reporttable&seoman=' + bunLogin + '&page=' + page;
         }
     };
-});
+//});
 
 
 

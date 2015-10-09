@@ -1,9 +1,10 @@
 var badHosts = ["yabs.yandex.ru", "news.yandex.ru", "rostov.propartner.ru", "market.yandex.ru", "rostov.pulscen.ru", "rostov.tiu.ru", "rostov.blizko.ru", "rostov-na-donu.unibo.ru", "rostov-na-donu.dmir.ru", "rostovnadonu.flagma.ru", "rostov-na-donu.aport.ru", "www.rostov-na-donu.build2last.ru", "ru.wikipedia.org", "rostov.neobroker.ru", "www.rosrealt.ru", "rostovnadonu.irr.ru", "rostov.n1.ru", "rostov-na-donu.naydidom.com", "dom.mirkvartir.ru", "www.realtymag.ru", "www.grinas.ru", "zemlidona.ru", "www.avito.ru", "allorostov.ru", "www.yell.ru", "dic.academic.ru", "rostov.printura.ru", "rostov.4geo.ru", "rnd.spravker.ru"];
 
 
-insertStript();
+
 
 if ($("div").is("#mk")) {} else {
+    insertStript();
     planirovka(badHosts);
 }
 
@@ -91,14 +92,6 @@ function determineMainAndInternalPage(title, url, data) {
         if (snippet.main) data.mainPageCount++;
         else data.internalPageCount++;
     }
-
-
-    //snippet.humanUrl = (snippet.humanUrl.lastIndexOf("/") === snippet.humanUrl.length - 1) ? snippet.humanUrl.substring(0, url.length - 1) : humanUrl;
-//    if (snippet.humanUrl.indexOf('/') > -1) {
-//        snippet.humanUrl = punycode.toUnicode(snippet.humanUrl.substring(0, snippet.humanUrl.indexOf('/'))) + snippet.humanUrl.substring(snippet.humanUrl.indexOf('/'));
-//    } else {
-//        snippet.humanUrl = punycode.toUnicode(snippet.humanUrl);
-//    }
 
     data.snippets.push(snippet);
     return data;
