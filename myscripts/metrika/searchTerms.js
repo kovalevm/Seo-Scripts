@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    if ($("table#ST_mk")) {
-        $("table#ST_mk").remove();
+    if ($("div#mk")) {
+        $("div#mk").remove();
     }
     printBetaYaMetSearchTerms();
 
