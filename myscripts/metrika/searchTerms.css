@@ -1,0 +1,19 @@
+table#ST_mk {
+    font-size: 10pt;
+    font-family: Arial;
+    line-height: 1.5;
+}
+
+table#ST_mk td {
+	padding:2px 7px;
+	border:1px solid black;
+	font:10pt Arial;
+	/*line-height: 1.5;*/
+}
+
+table#ST_mk {
+    /*border:1px solid black; */
+    border-collapse: collapse;
+    margin:20px 3px;
+}
+

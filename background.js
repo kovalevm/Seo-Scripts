@@ -30,7 +30,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, info, tab) {
         //console.log(patternData);
         //console.log('backgroung.js on ' + tab.url + ' with pattern - ' + pattern);
         //console.log(seoChanger[patternData.toggle]);
-        if (!seoChanger[patternData.toggle]) return;
+        if (!seoChanger[patternData.toggle]) continue;
 
         console.log('pattern - ' + patterns[i] + ' with toggle - ' + patternData.toggle);
         if (patternData.css) {
@@ -122,7 +122,12 @@ function determineRoutes(routes) {
         'https*://(beta\.)?metrika.yandex.ru/stat/phrases.*': {
             toggle: 'YaMphrases',
             myScripts: ['metrika/searchTerms.js'],
-            //css: 'yandsearch/planirovka.css'
+            css: 'metrika/searchTerms.css'
+        },
+        'https*://(beta\.)?metrika.yandex.ru/stat/search_engines.*': {
+            toggle: 'YaMphrases',
+            myScripts: ['metrika/searchSistems.js'],
+            css: 'metrika/searchTerms.css'
         },
         'https*://(beta\.)?metrika.yandex.ru/list.*': {
             toggle: 'metrikaList',
@@ -140,7 +145,7 @@ function determineRoutes(routes) {
             myScripts: ['bunker/topPagination.js'],
             //css: 'yandsearch/planirovka.css'
         },
-
+        /*
         'http:\/\/bunker-yug\.ru\/customer\.php\?.*id.*': {
             toggle: 'squeeze',
             myScripts: ['bunker/squeeze.js'],
@@ -149,14 +154,14 @@ function determineRoutes(routes) {
 
         'http*s*://bunker-yug.ru/.*': {
             toggle: 'squeeze',
-            myScripts: [ /*'bunker/squeeze.js'*/ ],
+            myScripts: [ ],
             css: 'bunker/squeeze.css'
         },
         'http:\/\/bunker-yug\.ru\/client\.php\?.*id.*': {
             toggle: 'squeeze',
-            myScripts: [ /*'bunker/squeeze.js'*/ ],
+            myScripts: [ ],
             css: 'bunker/squeezeClient.css'
-        },
+        },*/
         'https*://bunker-yug.ru/.*': {
             toggle: 'dopLinks',
             code: 'var bunLogin = "' + seoChanger.bunLogin + '";',

@@ -40,20 +40,15 @@ function printBetaYaMetSearchTerms() {
 		phrases.push($(element).text());
 	});
 
-	var table = '<div id="mk"><h5> Всего фраз: ' + (phrases.length) + '</h5><table id="ST_mk" style="border:1px solid black; border-collapse: collapse; margin:20px 3px"><tr><td class="serchTerms">';
-	var printToAlert = "";
+	var table = '<div id="mk"><table id="ST_mk" style="border:1px solid black; border-collapse: collapse; margin:20px 3px">';
 
 
-	for (var i = 0; i<parseInt((phrases.length)/2); i++)
+	for (var i = 0; i< phrases.length; i++)
 	{
-		table += phrases[i] + "<br />";
+		table += '<tr><td style="width:170px">' + phrases[i] + "</td><td>" + $('.percent.data-table__metricym-s-visits.data-table__metricym-s-visits_type_relative').eq(i).html() + '</td></tr>';
 	}
 
-	table += '</td><td class="serchTerms">';
-	for (var j = parseInt(phrases.length/2); j<phrases.length; j++)
-	{
-		table += phrases[j] + "<br />";
-	}
-	table += '</td></tr></table></div>';
+
+	table += '</table></div>';
 	$( ".report-page__table" ).before( table );
 }

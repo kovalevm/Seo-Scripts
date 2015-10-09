@@ -1,3 +1,9 @@
+$(function() {
+       $(".lined").linedtextarea({
+                selectedLine: 1
+            });
+});
+
 function adding() {
     function replaceAll(find, replace, str) {
         return str.replace(new RegExp(find, 'g'), replace);
