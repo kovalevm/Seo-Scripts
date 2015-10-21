@@ -119,7 +119,7 @@ function traslit(text) {
     transl['э'] = 'eh';
     transl['ю'] = 'yu';
     transl['я'] = 'ya';
-    transl[' '] = '_';
+    transl[' '] = '-';
     transl['\n'] = '\n';
 
 
