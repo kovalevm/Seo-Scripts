@@ -30,7 +30,7 @@ function openTabs(mouseEvent, service) {
     }
 
     //Выходим если есть ошибки
-    if ( errors.innerHTML !== errorsHeader) return;
+    if (errors.innerHTML !== errorsHeader) return;
     errors.innerHTML = '';
 
     var linkTmp = '';
@@ -39,8 +39,23 @@ function openTabs(mouseEvent, service) {
     else
         linkTmp = 'https://share.yandex.net/go.xml?service=' + service + '&url=';
 
-    for (j = 0; j < urls.length; j++) {
-        window.open((linkTmp + urls[j]), '_blank');
+    if (service === 'yandexAddURL') {
+        for (j = 0; j < urls.length; j++) {
+            window.open((linkTmp + urls[j]), '_blank');
+        }
+    } else {
+
+        var j = 0;
+        (function () {
+            if (j < urls.length) {
+                window.open((linkTmp + urls[j]), '_blank');
+                j++;
+                setTimeout(arguments.callee, 1000);
+            } else {
+                /*alert('Закончили');*/
+            }
+        })();
+
 
     }
 

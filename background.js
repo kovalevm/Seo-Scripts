@@ -175,6 +175,35 @@ function determineRoutes(routes) {
             code: 'document.forms[0].rep.focus();',
             //myScripts: ['addurlAutofocus.js'],
             jquery: false,
+        },
+        'http://vk.com/share.php?.*url=.*' : { // https*://webmaster\.yandex\.ru\/addurl.
+            toggle: 'addurlAutofocus',
+            documantReady: true,
+            code: 'setTimeout(function() { document.getElementById("post_button").click(); }, 2000);',
+            //myScripts: ['addurlAutofocus.js'],
+            jquery: false,
+        },
+        //document.getElementsByClassName('button-pro')[0]
+        'https*://connect.ok.ru/dk?.*st.cmd=WidgetSharePreview&st.shareUrl=.*' : {
+            toggle: 'addurlAutofocus',
+            documantReady: true,
+            code: 'setTimeout(function() { document.getElementsByClassName("button-pro")[0].click(); }, 2000);',
+            jquery: false,
+        },
+        //document.forms[0].share.click()
+        'https*://www.facebook.com/sharer/sharer.php?.*u=.*' : {
+            toggle: 'addurlAutofocus',
+            documantReady: true,
+            code: 'setTimeout(function() { document.forms[0].share.click(); }, 2000);',
+            jquery: false,
+        },
+        'https*://twitter.com/intent/tweet?.*status=.*' : {
+            toggle: 'addurlAutofocus',
+            documantReady: true,
+            code: 'setTimeout(function() { document.getElementById("update-form").submit(); }, 2000);',
+            jquery: false,
         }
+
+
     }
 }
