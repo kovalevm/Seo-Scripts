@@ -31,6 +31,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, info, tab) {
         //console.log(seoChanger[patternData.toggle]);
         if (!seoChanger[patternData.toggle]) continue;
 
+        if (seoChanger[patternData.documantReady]) continue;
+
         //console.log('pattern - ' + patterns[i] + ' with toggle - ' + patternData.toggle);
         if (patternData.css) {
             //console.log(patternData.css);
@@ -166,6 +168,13 @@ function determineRoutes(routes) {
             code: 'var bunLogin = "' + seoChanger.bunLogin + '";',
             myScripts: ['bunker/dopLinks.js'],
             css: 'bunker/dopLinks.css'
+        },
+        'https*://webmaster\.yandex\.ru\/addurl\.xml\?.*url.*' : { // https*://webmaster\.yandex\.ru\/addurl.
+            toggle: 'addurlAutofocus',
+            documantReady: true,
+            code: 'document.forms[0].rep.focus();',
+            //myScripts: ['addurlAutofocus.js'],
+            jquery: false,
         }
     }
 }

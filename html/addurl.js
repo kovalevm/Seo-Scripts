@@ -41,6 +41,7 @@ function openTabs(mouseEvent, service) {
 
     for (j = 0; j < urls.length; j++) {
         window.open((linkTmp + urls[j]), '_blank');
+
     }
 
 }
