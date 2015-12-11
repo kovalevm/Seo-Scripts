@@ -1,0 +1,21 @@
+.rds-bar {
+width: 100%;
+border-bottom-width: 1px !important;
+border-bottom-style: solid !important;
+border-bottom-color: #8A8A8A !important;
+opacity: 0.1;
+}
+
+.rds-bar:hover {
+    opacity: 1;
+}
+
+/*
+body {
+    margin-top: 30px !important;
+}
+*/
+
+.rds-bar-container {
+    background: #f0f0f0 !important;
+}

@@ -4,6 +4,7 @@ document.getElementById("odnoklassniki").addEventListener("click", openTabs);
 document.getElementById("twitter").addEventListener("click", openTabs);
 document.getElementById("facebook").addEventListener("click", openTabs);
 
+
 function openTabs(mouseEvent, service) {
 
     if (!service) service = this.id;
@@ -46,11 +47,21 @@ function openTabs(mouseEvent, service) {
     } else {
 
         var j = 0;
+        id = 19543;
         (function () {
             if (j < urls.length) {
-                window.open((linkTmp + urls[j]), '_blank');
+                chrome.tabs.create({url: (linkTmp + urls[j]), active: false}, function(tab){
+
+                    setTimeout(function() {
+                        chrome.tabs.remove(tab.id);
+                    }, 10000)
+
+                });
+
+//                window.open((linkTmp + urls[j]), '_blank');
                 j++;
-                setTimeout(arguments.callee, 1000);
+                id++;
+                setTimeout(arguments.callee, 5000);
             } else {
                 /*alert('Закончили');*/
             }
