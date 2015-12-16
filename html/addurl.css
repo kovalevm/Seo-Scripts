@@ -1,0 +1,62 @@
+.wrap {
+    width: 960px;
+    margin: 0 auto;
+}
+.main {
+    display: table;
+}
+.main textarea,
+.main > div {
+    display: table-cell;
+    vertical-align: top;
+}
+.right {
+    padding: 20px;
+}
+.right {
+    font-size: 16px;
+}
+.buttons {
+    margin: 10px 0 3px;
+}
+.buttons button {
+    margin-right: 28px
+}
+#errors {
+    color: red;
+}
+.blink {
+    -webkit-animation: blink 1s linear infinite;
+    animation: blink 1s linear infinite;
+}
+@-webkit-keyframes blink {
+    50% {
+        color: rgb(34, 34, 34);
+    }
+    51% {
+        color: rgba(34, 34, 34, 0);
+    }
+    100% {
+        color: rgba(34, 34, 34, 0);
+    }
+}
+@keyframes blink {
+    50% {
+        color: rgb(34, 34, 34);
+    }
+    51% {
+        color: rgba(34, 34, 34, 0);
+    }
+    100% {
+        color: rgba(34, 34, 34, 0);
+    }
+}
+.hide {
+    display: none;
+}
+#floatingBarsG {
+    position: relative;
+    width: 60px;
+    height: 75px;
+    margin: auto;
+}

@@ -4,56 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Add URL</title>
+    <link rel="stylesheet" href="loader.css">
+    <link rel="stylesheet" href="addurl.css">
 
-    <style>
-        .wrap {
-            width: 960px;
-            margin: 0 auto;
-        }
-        .main {
-            display: table;
-        }
-
-        .main textarea,
-        .main div {
-            display: table-cell;
-            vertical-align: middle;
-        }
-
-        .buttons {
-            margin: 10px 0 3px;
-        }
-
-        .buttons button {
-            margin-right: 28px
-        }
-
-        #errors {
-            padding: 10px;
-            color: red;
-        }
-    </style>
 </head>
 
 <body>
     <div class="wrap">
         <h1>Добавить страницы сайта в индекс ПС</h1>
         <p class="hint">Вносим список станиц. Каждая страница должна начинаться с протокола. (http, https). При первом нажатии на кнопку необходимо отклчить блокировщика всплывающих окон (в конце адресной строки будет желтенькая иконка).</p>
-                <div class="buttons">
-            <button id="yandexAddURL" >Добавить в addurl</button>
-            <button id="vkontakte" >Пинговать в ВК</button>
+        <div class="buttons">
+            <button id="yandexAddURL">Добавить в addurl</button>
+            <button id="vkontakte">Пинговать в ВК</button>
             <button id="odnoklassniki">Пинговать в ОК</button>
-            <button id="facebook" >Пинговать в FB</button>
-            <button id="twitter" >Пинговать в Twitter</button>
+            <button id="facebook">Пинговать в FB</button>
+            <button id="twitter">Пинговать в Twitter</button>
         </div>
         <div class="main">
-            <textarea name="urls" id="urls" cols="100" rows="40"></textarea>
-            <div id="errors">
-
+            <div class="left">
+                <textarea name="urls" id="urls" cols="100" rows="40"></textarea>
             </div>
+            <div class="right">
+                <div id="errors">
+
+                </div>
+                <div id="statistic" style="display:none">
+                    <div class="all-count-block">
+                        Всего ссылок: <span id="all-count-number"></span>
+                    </div>
+                    <div class="rest-count-block">
+                        Осталось: <span id="rest-count-number" class="blink"></span>
+                    </div>
+                    <div id="floatingBarsG" style="margin:30px 0">
+                        <div class="blockG" id="rotateG_01"></div>
+                        <div class="blockG" id="rotateG_02"></div>
+                        <div class="blockG" id="rotateG_03"></div>
+                        <div class="blockG" id="rotateG_04"></div>
+                        <div class="blockG" id="rotateG_05"></div>
+                        <div class="blockG" id="rotateG_06"></div>
+                        <div class="blockG" id="rotateG_07"></div>
+                        <div class="blockG" id="rotateG_08"></div>
+                    </div>
+                    <button id="stop">Плавненько<br />остановить</button>
+                </div>
+            </div>
+
         </div>
-
-
 
         <script type="text/javascript" src="addurl.js"></script>
 

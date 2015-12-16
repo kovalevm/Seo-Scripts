@@ -4,9 +4,13 @@ document.getElementById("odnoklassniki").addEventListener("click", openTabs);
 document.getElementById("twitter").addEventListener("click", openTabs);
 document.getElementById("facebook").addEventListener("click", openTabs);
 
+document.getElementById("stop").addEventListener("click", stop);
+
+var stop = false;
 
 function openTabs(mouseEvent, service) {
 
+    run();
     if (!service) service = this.id;
 
     var urls = document.getElementById('urls');
@@ -18,7 +22,7 @@ function openTabs(mouseEvent, service) {
 
     //валидация
     for (j = 0; j < urls.length; j++) {
-        console.log(urls[j]);
+        //console.log(urls[j]);
         urls[j] = trim(urls[j]);
 
         if (urls[j].indexOf('http') !== 0 || urls[j].indexOf(' ') !== -1) {
@@ -34,6 +38,7 @@ function openTabs(mouseEvent, service) {
     if (errors.innerHTML !== errorsHeader) return;
     errors.innerHTML = '';
 
+
     var linkTmp = '';
     if (service === 'yandexAddURL')
         linkTmp = 'https://webmaster.yandex.ru/addurl.xml?url=';
@@ -46,24 +51,34 @@ function openTabs(mouseEvent, service) {
         }
     } else {
 
-        var j = 0;
-        id = 19543;
-        (function () {
-            if (j < urls.length) {
-                chrome.tabs.create({url: (linkTmp + urls[j]), active: false}, function(tab){
+        //для блока статистики
+        toggle(document.getElementById('statistic'));
+        document.getElementById('all-count-number').innerHTML = urls.length;
+        document.getElementById('rest-count-number').innerHTML = urls.length;
 
-                    setTimeout(function() {
+        var j = 0;
+        var closeI = urls.length;
+        (function () {
+            if (j < urls.length && !stop) {
+                chrome.tabs.create({
+                    url: (linkTmp + urls[j]),
+                    active: false
+                }, function (tab) {
+
+                    setTimeout(function () {
                         chrome.tabs.remove(tab.id);
+                        closeI--;
+                        document.getElementById('rest-count-number').innerHTML = closeI;
                     }, 10000)
 
                 });
-
-//                window.open((linkTmp + urls[j]), '_blank');
                 j++;
-                id++;
+
                 setTimeout(arguments.callee, 5000);
+
             } else {
                 /*alert('Закончили');*/
+                toggle(document.getElementById('statistic'));
             }
         })();
 
@@ -71,6 +86,21 @@ function openTabs(mouseEvent, service) {
     }
 
 }
+
+function stop() {
+    stop = true;
+   // console.log(stop)
+}
+
+function run() {
+    stop = false;
+    //console.log(stop)
+}
+
+function toggle(el) {
+    el.style.display = (el.style.display == 'none') ? 'block' : 'none'
+}
+
 
 function trim(str, charlist) { // Strip whitespace (or other characters) from the beginning and end of a string
     //
