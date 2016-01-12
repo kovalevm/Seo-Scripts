@@ -1,3 +1,10 @@
+body {
+    background: url(img/bg1.png) #F2EDED repeat;
+    font-size:14px;
+}
+a, a:link {
+    color: black;
+}
 h4 {
     margin-bottom: 2px;
 }
@@ -28,7 +35,7 @@ input[type="checkbox"] + label {
     cursor: pointer;
     text-decoration: underline;
     /*    border-bottom: 1px solid lightgray;*/
-    color: lightgray;
+    color: #969696;
     background: url('img/lampVert.png') no-repeat top left;
 }
 input[type="checkbox"]:disabled  + label{
@@ -52,7 +59,7 @@ input#bunLogin {
     border-bottom: 1px solid lightgray;
     width: 125px;
     padding-left: 5px;
-    background-color: #F2EDED;
+    background: url(img/bg1.png) #F2EDED repeat;
     text-align: left;
     font-style: italic;
 /*    text-decoration: underline;*/
