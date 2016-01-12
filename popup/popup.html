@@ -3,65 +3,52 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="popup.css">
     <script src="../notmyscripts/jquery.js"></script>
 
-    <title>Seo</title>
-    <style>
-        .checkbox-activation {
-            width: 20px;
-            height: 20px;
-            border: none;
-            color: #fff;
-            margin: 0 0 0 5px;
-            padding: 5px 4px 3px 5px;
-        }
-
-        #cleanBD {
-            float: right;
-            margin-bottom: 5px;
-            display: none;
-        }
-    </style>
+    <title>Seo Scripts</title>
 </head>
 
 <body style="background:#F2EDED; font-size:14px;">
     <main style="width:300px;">
         <h3>Активация/Деактивация скриптов:</h3>
-        <span>Скрипт для планировки </span>
+
         <input name="planirovka" id="planirovka" type="checkbox" class="checkbox-activation">
-        <br />
-        <span>Распечатка фраз из LI</span>
+        <label for="planirovka">Скрипт для планировки</label>
         <input name="LIphrases" id="LIphrases" type="checkbox" class="checkbox-activation">
-        <br />
-        <span>Распечатка ПС из LI</span>
+        <label for="LIphrases">Распечатка фраз из LI</label>
+
+
         <input name="LISearchSistem" id="LISearchSistem" type="checkbox" class="checkbox-activation">
-        <br />
-        <span>Распечатка фраз из Я.Метрика</span>
+        <label for="LISearchSistem">Распечатка ПС из LI</label>
         <input name="YaMphrases" id="YaMphrases" type="checkbox" class="checkbox-activation">
-        <span>Стилизация списка счетчиков в метрике</span>
+        <label for="YaMphrases">Распечатка фраз из Я.Метрика</label>
         <input name="metrikaList" id="metrikaList" type="checkbox" class="checkbox-activation">
-        <br />
-        <span>Автоматизация аддурилки</span>
+        <label for="metrikaList">Стилизация списка счетчиков в метрике</label>
         <input name="addurlAutofocus" id="addurlAutofocus" type="checkbox" class="checkbox-activation">
-        <br />
-        <span>Стилизация RDS-бара</span>
+        <label for="addurlAutofocus">Автоматизация аддурилки</label>
         <input name="rdsStyles" id="rdsStyles" type="checkbox" class="checkbox-activation">
-        <br />
+        <label for="rdsStyles">Стилизация RDS-бара</label>
         <h4>Улучшение бункера</h4>
-        <span>Добавить верхню пагинацию</span>
         <input name="topPagination" id="topPagination" type="checkbox" class="checkbox-activation">
-        <br>
+        <label for="topPagination">Добавить верхню пагинацию</label>
+
 <!--
         <span>Сжать бункер</span>
         <input name="squeeze" id="squeeze" type="checkbox" class="checkbox-activation">
         <br>
 -->
-        <span>Доп ссылки</span>
+        <p>
+            <label>Для работы следующей функции необходимо указать логин в бункере -
+                <input name="bunLogin" id="bunLogin" type="text" maxlength="15" placeholder="Ваш логин" pattern="[a-z|A-Z|0-9]+">
+            </label>
+        </p>
         <input name="dopLinks" id="dopLinks" type="checkbox" class="checkbox-activation">
-        <span style="font-size:12px;">Для работы этой функции необходимо указать логин в бункере</span>
-        <input name="bunLogin" id="bunLogin" type="text" class="" width="70">
+        <label for="dopLinks">Доп ссылки</label>
+
+
         <!--  - <span style="font-size:12px; color:red">временно не работает</span> -->
-        <h3>Полезности:</h3>
+        <h4>Полезности:</h4>
         <ul>
         <li><a target="__blank" href="../html/termPlusWord.html">Создать проект кк</a></li>
         <li><a target="__blank" href="../html/addurl.html">Аддурилка</a></li>
@@ -73,3 +60,4 @@
 </body>
 
 </html>
+<!--onkeypress="if (this.value.length < 30) && (this.value.length > 10) this.style.width = ((this.value.length + 1) * 8) + 'px';"-->

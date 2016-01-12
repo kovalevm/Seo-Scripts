@@ -1,0 +1,66 @@
+h4 {
+    margin-bottom: 2px;
+}
+.checkbox-activation {
+    width: 20px;
+    height: 20px;
+    border: none;
+    color: #fff;
+    margin: 0 0 0 5px;
+    padding: 5px 4px 3px 5px;
+}
+#cleanBD {
+    float: right;
+    margin-bottom: 5px;
+    display: none;
+}
+input[type="checkbox"] {
+    display: none;
+}
+input[type="checkbox"] + label {
+    display: block;
+    line-height: 25px;
+    margin-top: 5px;
+    vertical-align: middle;
+    padding-left: 22px;
+    padding-right: 5px;
+    height: 25px;
+    cursor: pointer;
+    text-decoration: underline;
+    /*    border-bottom: 1px solid lightgray;*/
+    color: lightgray;
+    background: url('img/lampVert.png') no-repeat top left;
+}
+input[type="checkbox"]:disabled  + label{
+    text-decoration: line-through;
+    cursor: not-allowed;
+}
+input[type="checkbox"]:disabled  + label:after{
+    display: inline-block;
+    content: "(Введите логин выше)";
+    font-size: 12px;
+    color: black;
+    text-decoration: underline;
+}
+input[type="checkbox"]:checked + label {
+    /*    border-bottom: 1px solid black;*/
+    color: black;
+    background: url('img/lampVert.png') no-repeat bottom left;
+}
+input#bunLogin {
+    border: 0px;
+    border-bottom: 1px solid lightgray;
+    width: 125px;
+    padding-left: 5px;
+    background-color: #F2EDED;
+    text-align: left;
+    font-style: italic;
+/*    text-decoration: underline;*/
+}
+input#bunLogin:focus {
+    outline: none;
+}
+
+#dopLinks {
+
+}

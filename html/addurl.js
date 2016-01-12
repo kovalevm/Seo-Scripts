@@ -65,7 +65,10 @@ function openTabs(mouseEvent, service) {
                     active: false
                 }, function (tab) {
 
+                   sleep(5000);
+                    console.log(tab);
                     setTimeout(function () {
+                        console.log(tab);
                         chrome.tabs.remove(tab.id);
                         closeI--;
                         document.getElementById('rest-count-number').innerHTML = closeI;
@@ -77,7 +80,7 @@ function openTabs(mouseEvent, service) {
                 setTimeout(arguments.callee, 5000);
 
             } else {
-                /*alert('Закончили');*/
+                if (urls.length > 10) alert('Закончили');
                 toggle(document.getElementById('statistic'));
             }
         })();
@@ -113,4 +116,13 @@ function trim(str, charlist) { // Strip whitespace (or other characters) from th
     charlist = !charlist ? ' \s\xA0' : charlist.replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, '\$1');
     var re = new RegExp('^[' + charlist + ']+|[' + charlist + ']+$', 'g');
     return str.replace(re, '');
+}
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
 }
