@@ -19,6 +19,18 @@ function planirovka(badHosts) {
     var data = determineData(searchResults);
     con(data);
     $('.serp-list[role="complementary"]').append( template(data) );
+
+    chrome.runtime.sendMessage(
+        {boldWords: data.boldWords},
+        function (response) {
+            console.log(response);
+        }
+    );
+
+//    console.log('autoPlanTabId = ' + autoPlanTabId);
+//    chrome.runtime.sendMessage({greeting: 'hello'});
+    //chrome.extension.sendRequest(autoPlanTabId, {msg:"msg01"});
+
     //    con('badWords - ' + badWords);
 
 }
@@ -169,7 +181,7 @@ function template(data) {
 <div id="mk" style="width:500px;">\
     <div class="bold-words-div">\
         <h3><em>Подсвеченные слова:</em></h3>\
-        <p class="bold-words">' + data.boldWords + '</p>\
+        <p id="bold-words" class="bold-words">' + data.boldWords + '</p>\
     </div>\
     <div class="issue">\
         <br><span>Каталогов:' + data.catalogPageCount + '</span>\
@@ -205,3 +217,9 @@ function template(data) {
 function con(data) {
     console.log(data);
 }
+/*
+console.log(chrome.extension);
+
+console.log(chrome.tabs);
+
+*/

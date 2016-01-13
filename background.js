@@ -33,6 +33,18 @@ chrome.tabs.onUpdated.addListener(function (tabId, info, tab) {
 
         if (seoChanger[patternData.documantReady]) continue;
 
+        //находим tab.id страницы со скриптом автоматической планировки и вставляем в давнный
+        if (patterns[i] === 'https*://yandex.ru/(yand)?search.*')
+            chrome.tabs.query({
+                'url': 'chrome-extension://*/html/autoPlanirovka/autoPlanirovka.html'
+            }, function (tabs) {
+                if (tabs.length > 0) {
+                    chrome.tabs.executeScript(tab.id, {
+                        code: 'var autoPlanTabId = ' + tabs[0].id + ';'
+                    });
+                }
+            });
+
         //console.log('pattern - ' + patterns[i] + ' with toggle - ' + patternData.toggle);
         if (patternData.css) {
             //console.log(patternData.css);
@@ -75,7 +87,13 @@ chrome.tabs.onUpdated.addListener(function (tabId, info, tab) {
                 //runAt: "document_end"
             });
         }
+
+
     }
+
+
+    //html/autoPlanirovka/autoPlanirovka.html
+
     console.log('backgroung.js END on ' + tab.url);
     //console.log(' ');
 });
@@ -99,12 +117,12 @@ function determineRoutes(routes) {
             notMyScripts: ['punycode.js'],
             css: 'yandsearch/planirovka.css'
         },
-//        'https*://yandex.ru/(yand)?search.*': {
-//            toggle: 'planirovka',
-//            myScripts: ['yandsearch/planirovka.js'],
-//            notMyScripts: ['punycode.js'],
-//            css: 'yandsearch/planirovka.css'
-//        },
+        //        'https*://yandex.ru/(yand)?search.*': {
+        //            toggle: 'planirovka',
+        //            myScripts: ['yandsearch/planirovka.js'],
+        //            notMyScripts: ['punycode.js'],
+        //            css: 'yandsearch/planirovka.css'
+        //        },
         'https*://www.liveinternet.ru/stat/.*/queries.html.*': {
             toggle: 'LIphrases',
             myScripts: ['liveinternet/queries.js'],
@@ -169,14 +187,14 @@ function determineRoutes(routes) {
             myScripts: ['bunker/dopLinks.js'],
             css: 'bunker/dopLinks.css'
         },
-        'https*://webmaster\.yandex\.ru\/addurl\.xml\?.*url.*' : { // https*://webmaster\.yandex\.ru\/addurl.
+        'https*://webmaster\.yandex\.ru\/addurl\.xml\?.*url.*': { // https*://webmaster\.yandex\.ru\/addurl.
             toggle: 'addurlAutofocus',
             documantReady: true,
             code: 'document.forms[0].rep.focus();',
             //myScripts: ['addurlAutofocus.js'],
             jquery: false,
         },
-        'https*://vk.com/share.php?.*url=.*' : { // https*://webmaster\.yandex\.ru\/addurl.
+        'https*://vk.com/share.php?.*url=.*': { // https*://webmaster\.yandex\.ru\/addurl.
             toggle: 'addurlAutofocus',
             documantReady: true,
             code: 'setTimeout(function() { document.getElementById("post_button").click(); }, 4000);',
@@ -184,30 +202,30 @@ function determineRoutes(routes) {
             jquery: false,
         },
         //document.getElementsByClassName('button-pro')[0]
-        'https*://connect.ok.ru/dk?.*st.cmd=WidgetSharePreview&st.shareUrl=.*' : {
+        'https*://connect.ok.ru/dk?.*st.cmd=WidgetSharePreview&st.shareUrl=.*': {
             toggle: 'addurlAutofocus',
             documantReady: true,
             code: 'setTimeout(function() { document.getElementsByClassName("button-pro")[0].click(); }, 4000);',
             jquery: false,
         },
         //document.forms[0].share.click()
-        'https*://www.facebook.com/sharer/sharer.php?.*u=.*' : {
+        'https*://www.facebook.com/sharer/sharer.php?.*u=.*': {
             toggle: 'addurlAutofocus',
             documantReady: true,
             code: 'setTimeout(function() { document.forms[0].share.click();  }, 4000);',
             jquery: false,
         },
-        'https*://twitter.com/intent/tweet?.*status=.*' : {
+        'https*://twitter.com/intent/tweet?.*status=.*': {
             toggle: 'addurlAutofocus',
             documantReady: true,
             code: 'setTimeout(function() { document.getElementById("update-form").submit(); }, 4000);',
             jquery: false,
         },
-        '.*' : {
+        '.*': {
             toggle: 'rdsStyles',
-//            documantReady: true,
+            //            documantReady: true,
             jquery: false,
-//            myScripts: ['rds/rdsCounditionStyles.js'],
+            //            myScripts: ['rds/rdsCounditionStyles.js'],
             css: 'rds/rdsMKstyles.css'
         },
         '1*https*://bunker-yug.ru/.*': {
