@@ -209,6 +209,12 @@ function determineRoutes(routes) {
             jquery: false,
 //            myScripts: ['rds/rdsCounditionStyles.js'],
             css: 'rds/rdsMKstyles.css'
+        },
+        '1*https*://bunker-yug.ru/.*': {
+            toggle: 'max-font-size',
+            documantReady: true,
+            myScripts: ['bunker/max-font-size.js'],
         }
+
     }
 }
