@@ -1,16 +1,9 @@
 document.getElementById("go").addEventListener("click", main);
 
-chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        console.log("background.js got a message")
-        console.log(request);
-        console.log(sender);
-        sendResponse("bar");
-    }
-);
+
 
 function main(mouseEvent) {
-    //делаем масик с ключами
+    //делаем массив с ключами
     var keys = document.getElementById('keys').value.split('\n');
 
     //фильтруем его от пустых строк и пробелов
@@ -22,28 +15,51 @@ function main(mouseEvent) {
         }
     };
 
+    //создаем новую вкладку с поиском с первым запросом
+    var searchTabId = -1;
     chrome.tabs.create({
         url: 'https://yandex.ru/search/?lr=39&text=' + keys[0],
         active: false
     }, function (tab) {
-        console.log(tab);
-
-
-
-//        setTimeout(function () {
-//            console.log('dafa');
-//
-//        }, 3000);
-//        sleep(5000);
-//        console.log(tab);
-//        setTimeout(function () {
-//            console.log(tab);
-//            chrome.tabs.remove(tab.id);
-//            closeI--;
-//            document.getElementById('rest-count-number').innerHTML = closeI;
-//        }, 10000)
-
+        searchTabId = tab.id;
     });
-//    console.log(keys);
-//    console.log(keys.length);
+
+    //слушаем runtime.onMessage, когда приходит связка (фраза + жирные слова) -
+    //добавляем её в keysAndBoldWords и обновляем странцу с поиском на следующий запрос,
+    //когда запросы заканчиваются, распечатываем результат
+    var keysAndBoldWords = {};
+    var keysCounter = 0;
+    chrome.runtime.onMessage.addListener(
+        function(request, sender, sendResponse) {
+//            console.log("Получили:")
+//            console.log(request);
+            /*console.log(sender);*/
+
+            keysAndBoldWords[request.query] = request.boldWords.join(', ');
+            keysCounter++;
+
+            if (keysCounter >= keys.length) {
+                console.log(keysAndBoldWords);
+                generateResultTable(keysAndBoldWords);
+                return;
+            }
+
+
+            chrome.tabs.update(searchTabId, {
+                url: 'https://yandex.ru/search/?lr=39&text=' + keys[keysCounter]
+            });
+//            sendResponse("bar");
+        }
+    );
+}
+
+function generateResultTable(data) {
+    $result = $('#resultTable')
+    $result.show();
+    $result= $('#resultTable').find('tbody');
+
+    for (var query in data) {
+        $result.append('<tr><td>' + query + '</td>\
+            <td>' + data[query] + '</td></tr>');
+     }
 }

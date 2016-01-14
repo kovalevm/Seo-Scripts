@@ -17,11 +17,17 @@ function planirovka(badHosts) {
 
     deleteRigthColumn();
     var data = determineData(searchResults);
-    con(data);
+
     $('.serp-list[role="complementary"]').append( template(data) );
 
+    con(data);
+
+    var query = $('input[type="search"]').val();
     chrome.runtime.sendMessage(
-        {boldWords: data.boldWords},
+        {
+            boldWords: data.boldWords,
+            query: query
+        },
         function (response) {
             console.log(response);
         }

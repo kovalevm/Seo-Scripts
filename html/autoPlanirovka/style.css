@@ -1,0 +1,12 @@
+main {
+    width: 1200px;
+}
+.left {
+    float: left;
+    width: 400px;
+}
+
+.right {
+    float: right;
+    width: 800px;
+}
