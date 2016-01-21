@@ -232,6 +232,11 @@ function determineRoutes(routes) {
             toggle: 'max-font-size',
             documantReady: true,
             myScripts: ['bunker/max-font-size.js'],
+        },
+        '2*https*://bunker-yug.ru/.*': {
+            toggle: 'dopLinksTop',
+            code: 'var bunLogin = "' + seoChanger.bunLogin + '";',
+            myScripts: ['bunker/dopLinksTop.js'],
         }
 
     }
