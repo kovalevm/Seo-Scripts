@@ -25,7 +25,8 @@ function planirovka(badHosts) {
     var query = $('input[type="search"]').val();
     chrome.runtime.sendMessage(
         {
-            boldWords: data.boldWords,
+            data: data,
+//            boldWords: data.boldWords,
             query: query
         },
         function (response) {
@@ -65,7 +66,7 @@ function determineData(searchResults) {
 
         //Ищем подсвеченные слова
         data = determineBoldWordsInElements([title, snippet], data);
-        data = determineMainAndInternalPage(title, url, data);
+        data = determineMainAndInternalPage(title, url, data, snippet);
 
     });
 
@@ -91,7 +92,7 @@ function determineBoldWordsInElements(elements, data) {
 
 
 
-function determineMainAndInternalPage(title, url, data) {
+function determineMainAndInternalPage(title, url, data, snippet_text) {
 
     var snippet = {};
     snippet.title = $(title).text();
@@ -110,6 +111,8 @@ function determineMainAndInternalPage(title, url, data) {
         if (snippet.main) data.mainPageCount++;
         else data.internalPageCount++;
     }
+
+    snippet.text = $(snippet_text).html();
 
     data.snippets.push(snippet);
     return data;

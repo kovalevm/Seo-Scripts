@@ -9,3 +9,6 @@
 //}
 //
 //
+
+
+    if (!$("mkLinks").is("#mkLinks") && $(".links_adm")) {

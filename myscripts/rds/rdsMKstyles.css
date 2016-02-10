@@ -19,3 +19,11 @@ body {
 .rds-bar-container {
     background: #f0f0f0 !important;
 }
+
+div.rds-bar-container:after {
+    content: 'Закрыть только сейчас.';
+    display: inline-block !important;
+    letter-spacing: normal;
+    margin-left: 5px;
+    line-height: 25px;
+}

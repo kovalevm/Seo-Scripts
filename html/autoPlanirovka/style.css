@@ -1,5 +1,5 @@
 main {
-    width: 1200px;
+/*    width: 1200px;*/
 }
 .left {
     float: left;
@@ -9,4 +9,107 @@ main {
 .right {
     float: right;
     width: 800px;
+}
+
+.centr {
+  min-height: 1000px;
+
+}
+
+.centr > div {
+    display: inline-block;
+        vertical-align: top;
+}
+
+.clr {
+ clear: both;
+}
+
+.planTable {
+    border: 1px solid;
+    display: inline-block;
+}
+
+.planTable > section, .planTable > header {
+    border-bottom: 1px solid #9E9E9E;
+}
+
+.planTable > header > div, .planTable > section > div {
+    display: inline-block;
+    padding: 3px 20px 3px 3px;
+}
+
+.planTable > header > div {
+
+    text-align: center;
+    font-weight: bold;
+
+}
+
+
+
+.number {
+    width: 22px;
+    text-align: left;
+}
+
+.phrase {
+    min-width: 320px;
+    text-align: left;
+}
+
+.addWords {
+    width: 300px;
+    text-align: left;
+}
+
+.commerce {
+    width: 40px;
+    text-align: center;
+}
+
+.internal {
+    text-align: center;
+    width: 40px;
+}
+
+.snippetsBlock {
+    display: none;
+    width: 600px;
+
+}
+
+/*
+
+.planTable section > h2 {
+    border: 1px solid;
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 0px;
+}
+
+.planTable section > .snippetsBlock {
+    display: none;
+    width: 95%;
+    margin: 0 20px;
+
+}
+
+.planTable .snippetsBlock > div {
+    padding: 0 0 5px 5px;
+    margin-top: 10px;
+    border-bottom: 1px solid #9E9E9E;
+}
+
+.planTable .snippetsBlock div h3 a{
+    color : blue;
+    text-decoration: none;
+}
+
+.planTable .snippetsBlock div h3 {
+    margin: 0px;
+}
+
+.planTable .snippetsBlock div p {
+    margin: 0px;
 }

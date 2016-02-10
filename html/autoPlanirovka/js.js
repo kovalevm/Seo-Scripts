@@ -1,6 +1,11 @@
 document.getElementById("go").addEventListener("click", main);
 
+$('h2.key').click(function() {alert('fda')})
 
+//$('h2.key').click(function() {
+//    console.log(this);
+////    $('div.snippetsBlock[number="' this.a '"]')
+//})
 
 function main(mouseEvent) {
     //делаем массив с ключами
@@ -29,18 +34,40 @@ function main(mouseEvent) {
     //когда запросы заканчиваются, распечатываем результат
     var keysAndBoldWords = {};
     var keysCounter = 0;
+    var resultTable = '';
+    var issues = '';
     chrome.runtime.onMessage.addListener(
         function(request, sender, sendResponse) {
 //            console.log("Получили:")
-//            console.log(request);
+            console.log(request);
             /*console.log(sender);*/
 
-            keysAndBoldWords[request.query] = request.boldWords.join(', ');
+            resultTable += '<section>';
+
+            resultTable += '<div class="number">' + keysCounter + '</div>';
+            resultTable += '<div class="phrase">' + request.query + '</div>';
+            resultTable += '<div class="addWords">' + request.data.boldWords + '</div>';
+            resultTable += '<div class="commerce">' +  '</div>';
+            resultTable += '<div class="internal">' +  '</div>';
+            resultTable += '<div number="' + keysCounter + '" class="issue">Нажми</div>';
+
+            resultTable += '</section>';
+
+            issues += generateSnippetsBlock(request.data.snippets,keysCounter);
+
+
+            //keysAndBoldWords[request.query] = request.boldWords.join(', ');
             keysCounter++;
 
             if (keysCounter >= keys.length) {
-                console.log(keysAndBoldWords);
-                generateResultTable(keysAndBoldWords);
+
+                resultTable += '</div>';
+                $('div.planTable').append(resultTable);
+                $('div.issueView').append(issues);
+
+                $('div.issue').click(function() {
+                    $('div.snippetsBlock[number="' + $(this).attr("number") + '"]').toggle("slow");
+                })
                 return;
             }
 
@@ -63,3 +90,21 @@ function generateResultTable(data) {
             <td>' + data[query] + '</td></tr>');
      }
 }
+
+function generateSnippetsBlock(snips,id) {
+    var result = '<div number="' + id + '" class="snippetsBlock">';
+    snips.forEach(function (obj, i) {
+        result += generateSnippet(obj, i);
+    })
+    result += '</div>';
+    return result;
+
+}
+
+function generateSnippet(snip, i) {
+    return '<div>' +
+        '<h3>' + (i+1) + '.  <a target="_blank" href="http://' + snip.humanUrl + '">' + snip.title + '</a></h3>'
+        + '<p>' + snip.text + '</p>'
+        + '</div>';
+}
+
