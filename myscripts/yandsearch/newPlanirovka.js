@@ -113,7 +113,7 @@ function determineMainAndInternalPage(title, url, data, snippet_text) {
     }
 
     snippet.text = $(snippet_text).html();
-
+    snippet.url = url;
     data.snippets.push(snippet);
     return data;
 }

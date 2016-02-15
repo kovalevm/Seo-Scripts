@@ -66,6 +66,7 @@ function main(mouseEvent) {
                 $('div.issueView').append(issues);
 
                 $('div.issue').click(function() {
+                    $('div.snippetsBlock').hide();
                     $('div.snippetsBlock[number="' + $(this).attr("number") + '"]').toggle("slow");
                 })
                 return;
@@ -102,9 +103,10 @@ function generateSnippetsBlock(snips,id) {
 }
 
 function generateSnippet(snip, i) {
-    return '<div>' +
-        '<h3>' + (i+1) + '.  <a target="_blank" href="http://' + snip.humanUrl + '">' + snip.title + '</a></h3>'
-        + '<p>' + snip.text + '</p>'
+    return '<div class="snippet">' +
+        '<h3>' + (i+1) + '.  <a target="_blank" href="' + snip.url + '">' + snip.title + '</a></h3>'
+        + '<p class="url">' + snip.url + '</p>'
+        + '<p class="text">' + snip.text + '</p>'
         + '</div>';
 }
 
