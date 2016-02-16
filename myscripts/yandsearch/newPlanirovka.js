@@ -11,28 +11,31 @@ if ($("div").is("#mk")) {} else {
 
 function planirovka(badHosts) {
     //console.log(analyzerCompetitors);
-    var searchResults = $("div[data-bem*='serp-item\":{}']");
+    var searchResults = $('div.serp-item[aria-posinset]');
 
     //analyzerCompetitors.save(searchResults);
 
     deleteRigthColumn();
     var data = determineData(searchResults);
 
-    $('.serp-list[role="complementary"]').append( template(data) );
+
+    //$('.serp-list[role="complementary"]').append( template(data) );
+
+    $('.content__right').prepend( template(data) );
 
     con(data);
 
-    var query = $('input[type="search"]').val();
-    chrome.runtime.sendMessage(
-        {
-            data: data,
-//            boldWords: data.boldWords,
-            query: query
-        },
-        function (response) {
-            console.log(response);
-        }
-    );
+//    var query = $('input[type="search"]').val();
+//    chrome.runtime.sendMessage(
+//        {
+//            data: data,
+////            boldWords: data.boldWords,
+//            query: query
+//        },
+//        function (response) {
+//            console.log(response);
+//        }
+//    );
 
 //    console.log('autoPlanTabId = ' + autoPlanTabId);
 //    chrome.runtime.sendMessage({greeting: 'hello'});
