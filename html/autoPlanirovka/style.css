@@ -5,6 +5,7 @@ main {
 }
 .tab-pane {
     width: 99%;
+    padding: 20px 0;
 }
 
 table.planTable th {

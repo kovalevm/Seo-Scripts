@@ -1,4 +1,5 @@
 document.getElementById("go").addEventListener("click", main);
+document.getElementById("downloadCsv").addEventListener("click", saveCsv);
 
 $('h2.key').click(function() {alert('fda')})
 
@@ -133,3 +134,20 @@ function generateSnippet(snip, i) {
         + '</div>';
 }
 
+function saveCsv() {
+    var res = '';
+    $('table.planTable>tbody>tr').each(function () {
+        $(this).find('td').each(function () {
+            res += $(this).text() + ';';
+        })
+        res += '\r\n';
+    })
+
+    var blob = new Blob([res], { type: "text/plain" }),
+        url = window.URL.createObjectURL(blob),
+        a = document.createElement("a");
+
+    a.href = url;
+    a.download = 'Планировка ' + new Date().toString().substring(4, 24) + '.csv';
+    a.click();
+}
