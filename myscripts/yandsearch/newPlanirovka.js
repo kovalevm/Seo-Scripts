@@ -25,17 +25,16 @@ function planirovka(badHosts) {
 
     con(data);
 
-//    var query = $('input[type="search"]').val();
-//    chrome.runtime.sendMessage(
-//        {
-//            data: data,
-////            boldWords: data.boldWords,
-//            query: query
-//        },
-//        function (response) {
-//            console.log(response);
-//        }
-//    );
+    var query = $('input[type="search"]').val();
+    chrome.runtime.sendMessage(
+        {
+            data: data,
+            query: query
+        },
+        function (response) {
+            console.log(response);
+        }
+    );
 
 //    console.log('autoPlanTabId = ' + autoPlanTabId);
 //    chrome.runtime.sendMessage({greeting: 'hello'});

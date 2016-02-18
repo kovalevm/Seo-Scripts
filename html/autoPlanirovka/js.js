@@ -42,18 +42,35 @@ function main(mouseEvent) {
             console.log(request);
             /*console.log(sender);*/
 
-            resultTable += '<section>';
+//            resultTable += '<div class="row">';
+//
+//            resultTable += '<div class="col-lg-1 number">' + keysCounter + '</div>';
+//            resultTable += '<div class="col-lg-5 phrase">' + request.query + '</div>';
+//            resultTable += '<div class="col-lg-3 addWords">' + request.data.boldWords + '</div>';
+//            resultTable += '<div class="col-lg-1 commerce">' +  '</div>';
+//            resultTable += '<div class="col-lg-1 internal">'
+//                + request.data.mainPageCount + '/' + request.data.internalPageCount
+//                + '</div>';
+//            resultTable += '<div number="' + keysCounter + '" class="col-lg-1 issue">Нажми</div>';
+//
+//            resultTable += '</div>';
 
-            resultTable += '<div class="number">' + keysCounter + '</div>';
-            resultTable += '<div class="phrase">' + request.query + '</div>';
-            resultTable += '<div class="addWords">' + request.data.boldWords + '</div>';
-            resultTable += '<div class="commerce">' +  '</div>';
-            resultTable += '<div class="internal">' +  '</div>';
-            resultTable += '<div number="' + keysCounter + '" class="issue">Нажми</div>';
+            resultTable += '<tr number="' + keysCounter + '">';
 
-            resultTable += '</section>';
+            resultTable += '<td class="number col-lg-1">' + (keysCounter+1) + '</td>';
+            resultTable += '<td class="phrase col-lg-5">' + request.query + '</td>';
+            resultTable += '<td class="addWords col-lg-3">' + request.data.boldWords + '</td>';
+            resultTable += '<td class="commerce col-lg-1"><input type="checkbox">' +  '</td>';
+            resultTable += '<td class="internal col-lg-1">'
+                + request.data.mainPageCount + '/' + request.data.internalPageCount
+                + '</td>';
+            resultTable += '<td  class="col-lg-1">'
+                + '<button number="' + keysCounter + '" class="issue btn btn-default btn-xs">Нажми</button></td>';
 
-            issues += generateSnippetsBlock(request.data.snippets,keysCounter);
+            resultTable += '</tr>';
+
+
+            issues += generateSnippetsBlock(request.data.snippets,keysCounter,request.query);
 
 
             //keysAndBoldWords[request.query] = request.boldWords.join(', ');
@@ -62,12 +79,16 @@ function main(mouseEvent) {
             if (keysCounter >= keys.length) {
 
                 resultTable += '</div>';
-                $('div.planTable').append(resultTable);
+//                $('div.planTable').append(resultTable);
+                $('table.planTable').append(resultTable);
                 $('div.issueView').append(issues);
 
-                $('div.issue').click(function() {
+                $('.issue').click(function() {
                     $('div.snippetsBlock').hide();
-                    $('div.snippetsBlock[number="' + $(this).attr("number") + '"]').toggle("slow");
+                    $('table.planTable tr').removeClass('bg-primary');
+                    $('table.planTable tr[number="' + $(this).attr("number") + '"]').addClass('bg-primary');
+
+                    $('div.snippetsBlock[number="' + $(this).attr("number") + '"]').toggle();
                 })
                 return;
             }
@@ -92,8 +113,10 @@ function generateResultTable(data) {
      }
 }
 
-function generateSnippetsBlock(snips,id) {
-    var result = '<div number="' + id + '" class="snippetsBlock">';
+function generateSnippetsBlock(snips,id, query) {
+    var result = '<div number="' + id + '" class="snippetsBlock" style="display: none">';
+//    result += '<span>Выдача по запросу:</span>'
+    result += '<h3 class="bg-info text-center">' + query + '</h3>';
     snips.forEach(function (obj, i) {
         result += generateSnippet(obj, i);
     })
@@ -104,8 +127,8 @@ function generateSnippetsBlock(snips,id) {
 
 function generateSnippet(snip, i) {
     return '<div class="snippet">' +
-        '<h3>' + (i+1) + '.  <a target="_blank" href="' + snip.url + '">' + snip.title + '</a></h3>'
-        + '<p class="url">' + snip.url + '</p>'
+        '<h4>' + (i+1) + '.  <a target="_blank" href="' + snip.url + '">' + snip.title + '</a></h4>'
+        + '<p class="url"><a href="' + snip.url + '">' + snip.humanUrl + '</a></p>'
         + '<p class="text">' + snip.text + '</p>'
         + '</div>';
 }

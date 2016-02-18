@@ -13,17 +13,64 @@
 
 <body>
     <main>
+
         <h1 style="margin-bottom: 2px;">Автоматическое составление планировки</h1>
         <p style="margin-top: 0px;">почти автоматическое :-)</p>
 
-        <div class="left">
-            <label for="keys">Внесите в поле ниже список ключевых фраз</label>
-            <br>
-            <textarea name="" id="keys" cols="50" rows="15">1с бухгалтерия
-1с предприятие</textarea>
-            <br>
-            <button id="go">Поехали!</button>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#settings" data-toggle="tab">Настройка</a></li>
+            <li><a href="#planirovka" data-toggle="tab">Планировка</a></li>
+            <li><a href="#competitors" data-toggle="tab">Конкуренты</a></li>
+            <li><a href="#positions" data-toggle="tab">Позиции</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="settings">
+                <label for="keys">
+                    Внесите в поле ниже список ключевых фраз
+                    <br>
+                    <textarea name="" id="keys" cols="50" rows="15">
+                    тюль
+тюль для кухни
+тюль для зала
+тюль для спальни
+                   1с бухгалтерия
+                    1с предприятие</textarea>
+                </label>
+            </div>
+            <div class="tab-pane container" id="planirovka">
+                <button class="btn" id="go">Поехали!</button>
+
+                <div class="row">
+
+                    <div class="table-responsive col-lg-8">
+                        <table class="planTable table ">
+                            <tr>
+                                <th>№</th>
+                                <th>Фраза</th>
+                                <th>Доп. слова</th>
+                                <th>К/Нк</th>
+                                <th>Гл/Вн</th>
+                                <th>Выдача</th>
+                            </tr>
+
+                        </table>
+                    </div>
+
+
+
+                    <div class="issueView col-lg-4">
+
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="competitors">...</div>
+            <div class="tab-pane" id="positions">...</div>
         </div>
+
+
 
         <div class="right">
             <table style="display: none;" id="resultTable">
@@ -37,23 +84,7 @@
 
         <div class="clr"></div>
 
-        <div class="centr">
-            <div class="planTable">
-                <header>
-                    <div class="number">№</div>
-                    <div class="phrase">Фраза</div>
-                    <div class="addWords">Доп. слова</div>
-                    <div class="commerce">К/Нк</div>
-                    <div class="internal">Гл/Вн</div>
-                    <div class="issue">Выдача</div>
-                </header>
 
-        </div>
-
-            <div class="issueView">
-
-            </div>
-        </div>
     </main>
 
 
@@ -80,4 +111,50 @@
 
 аренда бульдозера
 
+-->
+<!--
+                    <div class="container planTable">
+
+
+
+                        <div class="row">
+                            <div class="col-lg-1 number">№</div>
+                            <div class="col-lg-5 phrase">Фраза</div>
+                            <div class="col-lg-3 addWords">Доп. слова</div>
+                            <div class="col-lg-1 commerce">К/Нк</div>
+                            <div class="col-lg-1 internal">Гл/Вн</div>
+                            <div class="col-lg-1 issue">Выдача</div>
+                        </div>
+
+                    </div>
+-->
+        <!--
+        <div class="centr">
+            <div class="planTable">
+                <header>
+                    <div class="number">№</div>
+                    <div class="phrase">Фраза</div>
+                    <div class="addWords">Доп. слова</div>
+                    <div class="commerce">К/Нк</div>
+                    <div class="internal">Гл/Вн</div>
+                    <div class="issue">Выдача</div>
+                </header>
+
+            </div>
+
+            <div class="issueView">
+
+            </div>
+        </div>
+-->
+        <!--
+        <div class="left">
+
+            <label for="keys">Внесите в поле ниже список ключевых фраз</label>
+            <br>
+            <textarea name="" id="keys" cols="50" rows="15">1с бухгалтерия 1с предприятие</textarea>
+
+            <br>
+            <button id="go">Поехали!</button>
+        </div>
 -->
