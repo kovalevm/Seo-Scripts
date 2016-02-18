@@ -23,8 +23,10 @@ table.planTable td.phrase, table.planTable td.addWords {
 }
 
 .snippetsBlock {
+/*
     position: fixed;
     top: 0;
+*/
 }
 
 .snippetsBlock > h3 {

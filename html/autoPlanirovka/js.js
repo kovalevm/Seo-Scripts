@@ -1,7 +1,9 @@
 document.getElementById("go").addEventListener("click", main);
 document.getElementById("downloadCsv").addEventListener("click", saveCsv);
 
-$('h2.key').click(function() {alert('fda')})
+$('h2.key').click(function () {
+    alert('fda')
+})
 
 //$('h2.key').click(function() {
 //    console.log(this);
@@ -30,61 +32,61 @@ function main(mouseEvent) {
         searchTabId = tab.id;
     });
 
+    $('div.progress').show('slow');
+
     //слушаем runtime.onMessage, когда приходит связка (фраза + жирные слова) -
     //добавляем её в keysAndBoldWords и обновляем странцу с поиском на следующий запрос,
     //когда запросы заканчиваются, распечатываем результат
     var keysAndBoldWords = {};
     var keysCounter = 0;
-    var resultTable = '';
     var issues = '';
+
+    var $progressbar = $('#progressbar');
+    $progressbar.attr('aria-valuemax', keys.length);
+    $progressbar.attr('aria-valuenow', keysCounter);
+//    $progressbar.width( '0%')
+
+    var $table = $('#planTable_dad');
     chrome.runtime.onMessage.addListener(
-        function(request, sender, sendResponse) {
-//            console.log("Получили:")
+        function (request, sender, sendResponse) {
             console.log(request);
-            /*console.log(sender);*/
+            var tr = '';
 
-//            resultTable += '<div class="row">';
-//
-//            resultTable += '<div class="col-lg-1 number">' + keysCounter + '</div>';
-//            resultTable += '<div class="col-lg-5 phrase">' + request.query + '</div>';
-//            resultTable += '<div class="col-lg-3 addWords">' + request.data.boldWords + '</div>';
-//            resultTable += '<div class="col-lg-1 commerce">' +  '</div>';
-//            resultTable += '<div class="col-lg-1 internal">'
-//                + request.data.mainPageCount + '/' + request.data.internalPageCount
-//                + '</div>';
-//            resultTable += '<div number="' + keysCounter + '" class="col-lg-1 issue">Нажми</div>';
-//
-//            resultTable += '</div>';
+            tr += '<tr class="ui-state-default" number="' + keysCounter + '">';
 
-            resultTable += '<tr number="' + keysCounter + '">';
+            tr += '<td class="number col-lg-1">' + (keysCounter + 1) + '</td>';
+            tr += '<td class="phrase col-lg-5">' + request.query + '</td>';
+            tr += '<td class="addWords col-lg-3">' + request.data.boldWords + '</td>';
+            tr += '<td class="commerce col-lg-1"><input type="checkbox">' + '</td>';
+            tr += '<td class="internal col-lg-1">' + request.data.mainPageCount + '/' + request.data.internalPageCount + '</td>';
+            tr += '<td  class="col-lg-1">' + '<button number="' + keysCounter + '" class="issue btn btn-default btn-xs">Нажми</button></td>';
 
-            resultTable += '<td class="number col-lg-1">' + (keysCounter+1) + '</td>';
-            resultTable += '<td class="phrase col-lg-5">' + request.query + '</td>';
-            resultTable += '<td class="addWords col-lg-3">' + request.data.boldWords + '</td>';
-            resultTable += '<td class="commerce col-lg-1"><input type="checkbox">' +  '</td>';
-            resultTable += '<td class="internal col-lg-1">'
-                + request.data.mainPageCount + '/' + request.data.internalPageCount
-                + '</td>';
-            resultTable += '<td  class="col-lg-1">'
-                + '<button number="' + keysCounter + '" class="issue btn btn-default btn-xs">Нажми</button></td>';
+            tr += '</tr>';
 
-            resultTable += '</tr>';
+            $table.append(tr);
 
-
-            issues += generateSnippetsBlock(request.data.snippets,keysCounter,request.query);
-
-
+            issues += generateSnippetsBlock(request.data.snippets, keysCounter, request.query);
             //keysAndBoldWords[request.query] = request.boldWords.join(', ');
             keysCounter++;
+            $progressbar.width( (keysCounter/keys.length * 100) + '%')
+
 
             if (keysCounter >= keys.length) {
 
-                resultTable += '</div>';
-//                $('div.planTable').append(resultTable);
-                $('table.planTable').append(resultTable);
+
+                chrome.tabs.remove(searchTabId);
+//               $('div.planTable').append(tr);
+//                $('#planTable_dad').append(tr);
+                    $('div.progress').hide('slow');
+
                 $('div.issueView').append(issues);
 
-                $('.issue').click(function() {
+                $(function () {
+                    $("#planTable_dad").sortable();
+                    $("#planTable_dad").disableSelection();
+                });
+
+                $('.issue').click(function () {
                     $('div.snippetsBlock').hide();
                     $('table.planTable tr').removeClass('bg-primary');
                     $('table.planTable tr[number="' + $(this).attr("number") + '"]').addClass('bg-primary');
@@ -98,7 +100,7 @@ function main(mouseEvent) {
             chrome.tabs.update(searchTabId, {
                 url: 'https://yandex.ru/search/?lr=39&text=' + keys[keysCounter]
             });
-//            sendResponse("bar");
+            //            sendResponse("bar");
         }
     );
 }
@@ -106,17 +108,17 @@ function main(mouseEvent) {
 function generateResultTable(data) {
     $result = $('#resultTable')
     $result.show();
-    $result= $('#resultTable').find('tbody');
+    $result = $('#resultTable').find('tbody');
 
     for (var query in data) {
         $result.append('<tr><td>' + query + '</td>\
             <td>' + data[query] + '</td></tr>');
-     }
+    }
 }
 
-function generateSnippetsBlock(snips,id, query) {
+function generateSnippetsBlock(snips, id, query) {
     var result = '<div number="' + id + '" class="snippetsBlock" style="display: none">';
-//    result += '<span>Выдача по запросу:</span>'
+    //    result += '<span>Выдача по запросу:</span>'
     result += '<h3 class="bg-info text-center">' + query + '</h3>';
     snips.forEach(function (obj, i) {
         result += generateSnippet(obj, i);
@@ -128,10 +130,7 @@ function generateSnippetsBlock(snips,id, query) {
 
 function generateSnippet(snip, i) {
     return '<div class="snippet">' +
-        '<h4>' + (i+1) + '.  <a target="_blank" href="' + snip.url + '">' + snip.title + '</a></h4>'
-        + '<p class="url"><a href="' + snip.url + '">' + snip.humanUrl + '</a></p>'
-        + '<p class="text">' + snip.text + '</p>'
-        + '</div>';
+        '<h4>' + (i + 1) + '.  <a target="_blank" href="' + snip.url + '">' + snip.title + '</a></h4>' + '<p class="url"><a href="' + snip.url + '">' + snip.humanUrl + '</a></p>' + '<p class="text">' + snip.text + '</p>' + '</div>';
 }
 
 function saveCsv() {
@@ -143,7 +142,9 @@ function saveCsv() {
         res += '\r\n';
     })
 
-    var blob = new Blob([res], { type: "text/plain" }),
+    var blob = new Blob([res], {
+            type: "text/plain"
+        }),
         url = window.URL.createObjectURL(blob),
         a = document.createElement("a");
 
