@@ -13,7 +13,6 @@
 
 <body>
     <main>
-
         <h1 style="margin-bottom: 2px;">Автоматическое составление планировки</h1>
         <p style="margin-top: 0px;">почти автоматическое :-)</p>
 
@@ -41,7 +40,7 @@
                 </label>
             </div>
             <div class="tab-pane container" id="planirovka">
-                <button class="btn" id="go">Поехали!</button>
+                <button class="btn btn-default" id="go">Поехали!</button>
                 <button class="btn btn-default" id="downloadCsv">Скачать csv</button>
 
                 <div class="row">
@@ -55,12 +54,12 @@
 
                         <table id="planTable" class="planTable table ">
                             <tr>
-                                <th>№</th>
+<!--                                <th>№</th>-->
                                 <th>Фраза</th>
                                 <th>Доп. слова</th>
                                 <th>К/Нк</th>
                                 <th>Гл/Вн</th>
-                                <th>Выдача</th>
+                                <th class="issue"><span class="glyphicon glyphicon-search"></span></th>
                             </tr>
                             <tbody id="planTable_dad"></tbody>
                         </table>

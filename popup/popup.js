@@ -1,3 +1,7 @@
+document.getElementById("bunkerTitle").addEventListener("click", function () {
+    document.getElementById("bunkerTogglesPanel").classList.toggle('hide');
+});
+
 var browser = get_name_browser();
 //console.log(browser);
 chrome.storage.local.get('seoChanger.switches', function(result) {

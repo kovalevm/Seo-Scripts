@@ -6,6 +6,7 @@ document.getElementById("facebook").addEventListener("click", openTabs);
 
 document.getElementById("stop").addEventListener("click", stop);
 
+
 var stop = false;
 
 function openTabs(mouseEvent, service) {
@@ -65,7 +66,7 @@ function openTabs(mouseEvent, service) {
                     active: false
                 }, function (tab) {
 
-                   sleep(5000);
+                    sleep(5000);
                     console.log(tab);
                     setTimeout(function () {
                         console.log(tab);
@@ -92,7 +93,7 @@ function openTabs(mouseEvent, service) {
 
 function stop() {
     stop = true;
-   // console.log(stop)
+    // console.log(stop)
 }
 
 function run() {
@@ -119,10 +120,55 @@ function trim(str, charlist) { // Strip whitespace (or other characters) from th
 }
 
 function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds) {
+            break;
+        }
     }
-  }
 }
+
+//chrome.storage.local.get('seoChanger.switches', function (result) {
+//    var seoChanger = result['seoChanger.switches'];
+//    if (seoChanger == null) {
+//        console.log('seoChanger is empty');
+//        seoChanger = null;
+//    } else {
+//        seoChanger = JSON.parse(seoChanger);
+//        seoChanger.addurlAutofocus = true;
+//
+//        seoChanger = JSON.stringify(seoChanger);
+//        chrome.storage.local.set({
+//            'seoChanger.switches': seoChanger
+//        })
+//
+//    }
+//});
+//
+//window.onbeforeunload = function (evt) {
+//    chrome.storage.local.get('seoChanger.switches', function (result) {
+//        var seoChanger = result['seoChanger.switches'];
+//        if (seoChanger == null) {
+//            console.log('seoChanger is empty');
+//            seoChanger = null;
+//        } else {
+//            seoChanger = JSON.parse(seoChanger);
+//            seoChanger.addurlAutofocus = false;
+//
+//            seoChanger = JSON.stringify(seoChanger);
+//            chrome.storage.local.set({
+//                'seoChanger.switches': seoChanger
+//            })
+//
+//        }
+//    });
+//
+//    var message = "Вы точно хотите покинутьс ";
+//    if (typeof evt == "undefined") {
+//        evt = window.event;
+//    }
+//    if (evt) {
+//        evt.returnValue = message;
+//    }
+//    return message;
+//}

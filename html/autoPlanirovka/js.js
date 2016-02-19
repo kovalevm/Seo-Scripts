@@ -1,9 +1,7 @@
 document.getElementById("go").addEventListener("click", main);
 document.getElementById("downloadCsv").addEventListener("click", saveCsv);
 
-$('h2.key').click(function () {
-    alert('fda')
-})
+
 
 //$('h2.key').click(function() {
 //    console.log(this);
@@ -44,7 +42,7 @@ function main(mouseEvent) {
     var $progressbar = $('#progressbar');
     $progressbar.attr('aria-valuemax', keys.length);
     $progressbar.attr('aria-valuenow', keysCounter);
-//    $progressbar.width( '0%')
+    //    $progressbar.width( '0%')
 
     var $table = $('#planTable_dad');
     chrome.runtime.onMessage.addListener(
@@ -54,12 +52,21 @@ function main(mouseEvent) {
 
             tr += '<tr class="ui-state-default" number="' + keysCounter + '">';
 
-            tr += '<td class="number col-lg-1">' + (keysCounter + 1) + '</td>';
+//            tr += '<td class="number col-lg-1">' + (keysCounter + 1) + '</td>';
             tr += '<td class="phrase col-lg-5">' + request.query + '</td>';
-            tr += '<td class="addWords col-lg-3">' + request.data.boldWords + '</td>';
-            tr += '<td class="commerce col-lg-1"><input type="checkbox">' + '</td>';
-            tr += '<td class="internal col-lg-1">' + request.data.mainPageCount + '/' + request.data.internalPageCount + '</td>';
-            tr += '<td  class="col-lg-1">' + '<button number="' + keysCounter + '" class="issue btn btn-default btn-xs">Нажми</button></td>';
+            tr += '<td class="addWords col-lg-5">';
+            if (request.data.boldWords.length > 0) {
+                tr += '<span class="dop-word">';
+                tr += request.data.boldWords.join(
+                    '<span class="glyphicon glyphicon-remove"></span>, </span><span class="dop-word">'
+                );
+                tr += '<span class="glyphicon glyphicon-remove"></span></span>';
+                }
+            tr += '</td>';
+
+            tr += '<td class="commerce">К' + '</td>';
+            tr += '<td class="internal ">' + request.data.mainPageCount + '/' + request.data.internalPageCount + '</td>';
+            tr += '<td class="issue " number="' + keysCounter + '"><span class="glyphicon glyphicon-arrow-right"></span></td>';
 
             tr += '</tr>';
 
@@ -68,23 +75,23 @@ function main(mouseEvent) {
             issues += generateSnippetsBlock(request.data.snippets, keysCounter, request.query);
             //keysAndBoldWords[request.query] = request.boldWords.join(', ');
             keysCounter++;
-            $progressbar.width( (keysCounter/keys.length * 100) + '%')
+            $progressbar.width((keysCounter / keys.length * 100) + '%')
 
 
             if (keysCounter >= keys.length) {
 
 
                 chrome.tabs.remove(searchTabId);
-//               $('div.planTable').append(tr);
-//                $('#planTable_dad').append(tr);
-                    $('div.progress').hide('slow');
+                //               $('div.planTable').append(tr);
+                //                $('#planTable_dad').append(tr);
+                $('div.progress').hide('slow');
 
                 $('div.issueView').append(issues);
 
-                $(function () {
-                    $("#planTable_dad").sortable();
-                    $("#planTable_dad").disableSelection();
-                });
+                //                $(function () {
+                //                    $("#planTable_dad").sortable();
+                //                    $("#planTable_dad").disableSelection();
+                //                });
 
                 $('.issue').click(function () {
                     $('div.snippetsBlock').hide();
@@ -93,6 +100,13 @@ function main(mouseEvent) {
 
                     $('div.snippetsBlock[number="' + $(this).attr("number") + '"]').toggle();
                 })
+                $('.commerce').click(function () {
+                    if ($(this).text() === 'К') $(this).text('Нк');
+                    else $(this).text('К');
+                })
+               $('td.addWords span.glyphicon.glyphicon-remove').click(function () {
+                   $(this).parent().remove();
+               })
                 return;
             }
 

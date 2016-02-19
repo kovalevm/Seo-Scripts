@@ -5,8 +5,10 @@ body {
 a, a:link {
     color: black;
 }
-h4 {
+h4#bunkerTitle  {
     margin-bottom: 2px;
+    text-decoration: underline;
+    cursor: pointer;
 }
 .checkbox-activation {
     width: 20px;
@@ -69,6 +71,9 @@ input#bunLogin:focus {
     outline: none;
 }
 
+.hide {
+    display: none;
+}
 #dopLinks {
 
 }

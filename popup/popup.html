@@ -29,50 +29,58 @@
         <input name="metrikaList" id="metrikaList" type="checkbox" class="checkbox-activation">
         <label for="metrikaList">Стилизация списка счетчиков в метрике</label>
 
-        <input name="addurlAutofocus" id="addurlAutofocus" type="checkbox" class="checkbox-activation">
-        <label for="addurlAutofocus">Автоматизация аддурилки</label>
-
         <input name="rdsStyles" id="rdsStyles" type="checkbox" class="checkbox-activation">
         <label for="rdsStyles">Стилизация RDS-бара</label>
 
-        <h4>Улучшение бункера</h4>
-
-        <input name="topPagination" id="topPagination" type="checkbox" class="checkbox-activation">
-        <label for="topPagination">Добавить верхню пагинацию</label>
-
-        <input name="max-font-size" id="max-font-size" type="checkbox" class="checkbox-activation">
-        <label for="max-font-size">Адекватный размер шрифта</label>
-
-<!--
-        <span>Сжать бункер</span>
-        <input name="squeeze" id="squeeze" type="checkbox" class="checkbox-activation">
-        <br>
--->
-        <p>
-            <label>Для работы следующей функции необходимо указать логин в бункере -
-                <input name="bunLogin" id="bunLogin" type="text" maxlength="15" placeholder="Ваш логин" pattern="[a-z|A-Z|0-9]+">
-            </label>
-        </p>
-
-        <input name="dopLinks" id="dopLinks" type="checkbox" class="checkbox-activation">
-        <label for="dopLinks">Доп ссылки</label>
-
-        <input name="dopLinksTop" id="dopLinksTop" type="checkbox" class="checkbox-activation">
-        <label for="dopLinksTop">Доп ссылки вверху</label>
 
 
         <!--  - <span style="font-size:12px; color:red">временно не работает</span> -->
         <h4>Полезности:</h4>
         <ul>
-        <li><a target="__blank" href="../html/termPlusWord.html">Создать проект кк</a></li>
-        <li><a target="__blank" href="../html/addurl.html">Аддурилка</a></li>
-        <li><a target="__blank" href="../html/autoPlanirovka/autoPlanirovka.html">Автоматическая планировка</a></li>
+            <li><a target="__blank" href="../html/termPlusWord.html">Создать проект кк</a></li>
+
+            <li><a target="__blank" href="../html/addurl.html">Аддурилка</a>
+                (<input name="addurlAutofocus" id="addurlAutofocus" type="checkbox" class="checkbox-activation">
+                <label style="
+                display: inline-block;
+                background-size: 12.5px;
+                line-height: inherit;
+                vertical-align: initial;
+                height: inherit;
+                " for="addurlAutofocus">Автоматизация</label>)
+            </li>
+
+            <li><a target="__blank" href="../html/autoPlanirovka/autoPlanirovka.html">Автоматическая планировка</a></li>
 
         </ul>
+        <h4 id="bunkerTitle">Улучшение бункера</h4>
+        <div id="bunkerTogglesPanel" class=" hide">
+            <input name="topPagination" id="topPagination" type="checkbox" class="checkbox-activation">
+            <label for="topPagination">Добавить верхню пагинацию</label>
+
+            <input name="max-font-size" id="max-font-size" type="checkbox" class="checkbox-activation">
+            <label for="max-font-size">Адекватный размер шрифта</label>
+
+            <!--
+        <span>Сжать бункер</span>
+        <input name="squeeze" id="squeeze" type="checkbox" class="checkbox-activation">
+        <br>
+-->
+            <p>
+                <label>Для работы следующей функции необходимо указать логин в бункере -
+                    <input name="bunLogin" id="bunLogin" type="text" maxlength="15" placeholder="Ваш логин" pattern="[a-z|A-Z|0-9]+">
+                </label>
+            </p>
+
+            <input name="dopLinks" id="dopLinks" type="checkbox" class="checkbox-activation">
+            <label for="dopLinks">Доп ссылки</label>
+
+            <input name="dopLinksTop" id="dopLinksTop" type="checkbox" class="checkbox-activation">
+            <label for="dopLinksTop">Доп ссылки вверху</label>
+        </div>
     </main>
     <button id="cleanBD">Очистить историю</button>
     <script src="popup.js"></script>
 </body>
 
 </html>
-<!--onkeypress="if (this.value.length < 30) && (this.value.length > 10) this.style.width = ((this.value.length + 1) * 8) + 'px';"-->

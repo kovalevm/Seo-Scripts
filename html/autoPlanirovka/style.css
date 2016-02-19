@@ -22,6 +22,33 @@ table.planTable td.phrase, table.planTable td.addWords {
     text-align: left;
 }
 
+
+/*
+td.issue, th.issue, td.internal, td.commerce, th.internal, th.commerce {
+    width: 100px !important;
+}
+*/
+
+td.commerce, td.issue {
+    cursor: pointer;
+}
+
+td.commerce:hover, td.issue:hover {
+    background-color: rgba(191, 215, 234, 0.4);
+}
+
+td.addWords span.glyphicon.glyphicon-remove {
+    top: 2px;
+    font-size: 13px;
+    margin-left: 2px;
+    cursor: pointer;
+    color: gainsboro;
+}
+
+td.addWords span.glyphicon.glyphicon-remove:hover {
+    text-decoration: underline;
+    color: black;
+}
 .snippetsBlock {
 /*
     position: fixed;
