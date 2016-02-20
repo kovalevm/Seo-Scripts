@@ -1,7 +1,7 @@
 document.getElementById("go").addEventListener("click", main);
 document.getElementById("downloadCsv").addEventListener("click", saveCsv);
 
-
+var issues = [];
 
 //$('h2.key').click(function() {
 //    console.log(this);
@@ -37,7 +37,6 @@ function main(mouseEvent) {
     //когда запросы заканчиваются, распечатываем результат
     var keysAndBoldWords = {};
     var keysCounter = 0;
-    var issues = '';
 
     var $progressbar = $('#progressbar');
     $progressbar.attr('aria-valuemax', keys.length);
@@ -48,11 +47,12 @@ function main(mouseEvent) {
     chrome.runtime.onMessage.addListener(
         function (request, sender, sendResponse) {
             console.log(request);
-            var tr = '';
+            var first = true,
+                tr = ''
 
             tr += '<tr class="ui-state-default" number="' + keysCounter + '">';
 
-//            tr += '<td class="number col-lg-1">' + (keysCounter + 1) + '</td>';
+            //            tr += '<td class="number col-lg-1">' + (keysCounter + 1) + '</td>';
             tr += '<td class="phrase col-lg-5">' + request.query + '</td>';
             tr += '<td class="addWords col-lg-5">';
             if (request.data.boldWords.length > 0) {
@@ -61,52 +61,76 @@ function main(mouseEvent) {
                     '<span class="glyphicon glyphicon-remove"></span>, </span><span class="dop-word">'
                 );
                 tr += '<span class="glyphicon glyphicon-remove"></span></span>';
-                }
+            }
             tr += '</td>';
 
             tr += '<td class="commerce">К' + '</td>';
             tr += '<td class="internal ">' + request.data.mainPageCount + '/' + request.data.internalPageCount + '</td>';
-            tr += '<td class="issue " number="' + keysCounter + '"><span class="glyphicon glyphicon-arrow-right"></span></td>';
+            tr += '<td class="issue " data-container="body" data-toggle="popover" data-placement="right" data-html="true" number="' + keysCounter + '"><span class="glyphicon glyphicon-arrow-right"></span></td>';
 
             tr += '</tr>';
 
             $table.append(tr);
+            issues[keysCounter] = generateSnippetsBlock(request.data.snippets, keysCounter, request.query);
+            //            $('div.issueView')
+            //                .append(generateSnippetsBlock(request.data.snippets, keysCounter, request.query));
 
-            issues += generateSnippetsBlock(request.data.snippets, keysCounter, request.query);
-            //keysAndBoldWords[request.query] = request.boldWords.join(', ');
             keysCounter++;
             $progressbar.width((keysCounter / keys.length * 100) + '%')
 
+            if (first) {
+                $('.issue').popover({
+                    html: true,
+                    content: function () {
 
-            if (keysCounter >= keys.length) {
-
-
-                chrome.tabs.remove(searchTabId);
-                //               $('div.planTable').append(tr);
-                //                $('#planTable_dad').append(tr);
-                $('div.progress').hide('slow');
-
-                $('div.issueView').append(issues);
-
-                //                $(function () {
-                //                    $("#planTable_dad").sortable();
-                //                    $("#planTable_dad").disableSelection();
-                //                });
-
-                $('.issue').click(function () {
-                    $('div.snippetsBlock').hide();
-                    $('table.planTable tr').removeClass('bg-primary');
-                    $('table.planTable tr[number="' + $(this).attr("number") + '"]').addClass('bg-primary');
-
-                    $('div.snippetsBlock[number="' + $(this).attr("number") + '"]').toggle();
+                        //                        console.log(issues[0]);
+                        //console.log(issues[  parseInt($(this).attr("number")) ]);
+                        return issues[parseInt($(this).attr("number"))];
+                        //                        console.log(this);
+                        //                      return $('#popoverExampleTwoHiddenContent').html();
+                    }
+                });
+                $('.issue').on('show.bs.popover', function () {
+                    var popoverId = $(this).attr("aria-describedby"),
+                        $popover = $('#' + popoverId);
+                    console.log($popover);
+                        $popover.css('top', pageYOffset + 'px')
+//                    console.log(this);
                 })
+
+                //                $('.issue').click(function () {
+                //                    $('div.snippetsBlock').hide();
+                //                    $('table.planTable tr').removeClass('bg-primary');
+                //
+                //                    $('table.planTable tr[number="' + $(this).attr("number") + '"]').addClass('bg-primary');
+                //                    var snippetsBlock = $('div.snippetsBlock[number="' + $(this).attr("number") + '"]')[0];
+                //                    $(snippetsBlock).toggle();
+                //
+                //                })
                 $('.commerce').click(function () {
                     if ($(this).text() === 'К') $(this).text('Нк');
                     else $(this).text('К');
                 })
-               $('td.addWords span.glyphicon.glyphicon-remove').click(function () {
-                   $(this).parent().remove();
-               })
+                $('td.addWords span.glyphicon.glyphicon-remove').click(function () {
+                    $(this).parent().remove();
+                })
+
+                first = false;
+            }
+
+            if (keysCounter >= keys.length) {
+
+                chrome.tabs.remove(searchTabId);
+                $('div.progress').hide('slow');
+
+
+
+                //                                $(function () {
+                //                                    $("#planTable_dad").sortable();
+                //                                    $("#planTable_dad").disableSelection();
+                //                                });
+
+
                 return;
             }
 
@@ -131,7 +155,7 @@ function generateResultTable(data) {
 }
 
 function generateSnippetsBlock(snips, id, query) {
-    var result = '<div number="' + id + '" class="snippetsBlock" style="display: none">';
+    var result = '<div number="' + id + '" class="snippetsBlock" style="">';
     //    result += '<span>Выдача по запросу:</span>'
     result += '<h3 class="bg-info text-center">' + query + '</h3>';
     snips.forEach(function (obj, i) {
@@ -165,4 +189,8 @@ function saveCsv() {
     a.href = url;
     a.download = 'Планировка ' + new Date().toString().substring(4, 24) + '.csv';
     a.click();
+}
+
+function getIssue(i) {
+    return issues(i);
 }

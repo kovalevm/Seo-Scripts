@@ -49,11 +49,15 @@ td.addWords span.glyphicon.glyphicon-remove:hover {
     text-decoration: underline;
     color: black;
 }
+
+/*.popover-content {width: 400px;}*/
+
+div.popover {
+    /* width: 5550px; */
+    max-width: none;
+}
 .snippetsBlock {
-/*
-    position: fixed;
-    top: 0;
-*/
+/*    position: relative;*/
 }
 
 .snippetsBlock > h3 {
