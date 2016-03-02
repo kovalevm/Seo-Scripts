@@ -1,0 +1,1 @@
+div#search > div.g > h3 + span.st + cite

@@ -1,12 +1,34 @@
 document.getElementById("go").addEventListener("click", main);
 document.getElementById("downloadCsv").addEventListener("click", saveCsv);
 
+$('table#planTable').on('click', 'td.commerce', function () {
+    if ($(this).text() === 'К') $(this).text('Нк');
+    else $(this).text('К');
+});
+
+$('table#planTable').on('click', 'td.addWords span.glyphicon.glyphicon-remove', function () {
+    $(this).parent().remove();
+});
+
+$(document).on('mouseenter', '.snippet', function() {
+    $( this ).find('.text').fadeIn();
+  });
+$(document).on('mouseleave', '.snippet', function() {
+    $( this ).find('.text').fadeOut(0);
+  });
+
+//$('table#planTable').on('show.bs.popover', '.issue', function () {
+//
+//    var popoverId = $(this).attr("aria-describedby"),
+//        $popover = $('#' + popoverId);
+//    console.log($popover);
+//    $popover.css('top', pageYOffset + 'px')
+//        //                    console.log(this);
+//})
+
+
 var issues = [];
 
-//$('h2.key').click(function() {
-//    console.log(this);
-////    $('div.snippetsBlock[number="' this.a '"]')
-//})
 
 function main(mouseEvent) {
     //делаем массив с ключами
@@ -46,9 +68,10 @@ function main(mouseEvent) {
     var $table = $('#planTable_dad');
     chrome.runtime.onMessage.addListener(
         function (request, sender, sendResponse) {
+            if (sender.tab.id !== searchTabId) return;
             console.log(request);
-            var first = true,
-                tr = ''
+
+            var tr = '';
 
             tr += '<tr class="ui-state-default" number="' + keysCounter + '">';
 
@@ -66,78 +89,40 @@ function main(mouseEvent) {
 
             tr += '<td class="commerce">К' + '</td>';
             tr += '<td class="internal ">' + request.data.mainPageCount + '/' + request.data.internalPageCount + '</td>';
-            tr += '<td class="issue " data-container="body" data-toggle="popover" data-placement="right" data-html="true" number="' + keysCounter + '"><span class="glyphicon glyphicon-arrow-right"></span></td>';
+            tr += '<td >\
+                <a href="#" onclick="return false;" tabindex="0"  class="issue btn btn-primary btn-xs popover-dismissible" role="button"\
+                    data-container="body" data-toggle="popover"\
+                    data-trigger="focus" data-placement="right" data-html="true" number="' + keysCounter + '">\
+                <span class="glyphicon glyphicon-arrow-right"></span></a></td>';
 
             tr += '</tr>';
 
             $table.append(tr);
             issues[keysCounter] = generateSnippetsBlock(request.data.snippets, keysCounter, request.query);
-            //            $('div.issueView')
-            //                .append(generateSnippetsBlock(request.data.snippets, keysCounter, request.query));
 
-            keysCounter++;
             $progressbar.width((keysCounter / keys.length * 100) + '%')
 
-            if (first) {
-                $('.issue').popover({
+            $('a.issue[number="' + (keysCounter) + '"]')
+                .click(function (event) {
+                    event.preventDefault();
+                })
+                .popover({
                     html: true,
                     content: function () {
-
-                        //                        console.log(issues[0]);
-                        //console.log(issues[  parseInt($(this).attr("number")) ]);
                         return issues[parseInt($(this).attr("number"))];
-                        //                        console.log(this);
-                        //                      return $('#popoverExampleTwoHiddenContent').html();
                     }
                 });
-                $('.issue').on('show.bs.popover', function () {
-                    var popoverId = $(this).attr("aria-describedby"),
-                        $popover = $('#' + popoverId);
-                    console.log($popover);
-                        $popover.css('top', pageYOffset + 'px')
-//                    console.log(this);
-                })
 
-                //                $('.issue').click(function () {
-                //                    $('div.snippetsBlock').hide();
-                //                    $('table.planTable tr').removeClass('bg-primary');
-                //
-                //                    $('table.planTable tr[number="' + $(this).attr("number") + '"]').addClass('bg-primary');
-                //                    var snippetsBlock = $('div.snippetsBlock[number="' + $(this).attr("number") + '"]')[0];
-                //                    $(snippetsBlock).toggle();
-                //
-                //                })
-                $('.commerce').click(function () {
-                    if ($(this).text() === 'К') $(this).text('Нк');
-                    else $(this).text('К');
-                })
-                $('td.addWords span.glyphicon.glyphicon-remove').click(function () {
-                    $(this).parent().remove();
-                })
-
-                first = false;
-            }
-
-            if (keysCounter >= keys.length) {
-
-                chrome.tabs.remove(searchTabId);
-                $('div.progress').hide('slow');
-
-
-
-                //                                $(function () {
-                //                                    $("#planTable_dad").sortable();
-                //                                    $("#planTable_dad").disableSelection();
-                //                                });
-
-
-                return;
-            }
-
-
+            keysCounter++;
             chrome.tabs.update(searchTabId, {
                 url: 'https://yandex.ru/search/?lr=39&text=' + keys[keysCounter]
             });
+
+            if (keysCounter >= keys.length) {
+                chrome.tabs.remove(searchTabId);
+                $('div.progress').hide('slow');
+                return;
+            }
             //            sendResponse("bar");
         }
     );
