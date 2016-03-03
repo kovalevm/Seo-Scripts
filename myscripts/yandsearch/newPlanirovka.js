@@ -5,21 +5,15 @@ var badHosts = ["yabs.yandex.ru", "news.yandex.ru", "rostov.propartner.ru", "mar
 
 if ($("div").is("#mk")) {} else {
     insertStript();
-    planirovka(badHosts);
+    planirovkaYandex(badHosts);
 }
 
 
-function planirovka(badHosts) {
-    //console.log(analyzerCompetitors);
+function planirovkaYandex(badHosts) {
     var searchResults = $('div.serp-item[aria-posinset]');
-
-    //analyzerCompetitors.save(searchResults);
 
     deleteRigthColumn();
     var data = determineData(searchResults);
-
-
-    //$('.serp-list[role="complementary"]').append( template(data) );
 
     $('.content__right').prepend( template(data) );
 
@@ -35,12 +29,9 @@ function planirovka(badHosts) {
             console.log(response);
         }
     );
+}
 
-//    console.log('autoPlanTabId = ' + autoPlanTabId);
-//    chrome.runtime.sendMessage({greeting: 'hello'});
-    //chrome.extension.sendRequest(autoPlanTabId, {msg:"msg01"});
-
-    //    con('badWords - ' + badWords);
+functiom planirovkaGoogle(badHosts) {
 
 }
 
@@ -211,7 +202,7 @@ function template(data) {
             s += '>'
             if (snippet.main) s += 'Гл';
             else s += 'Вн';
-            s += '- <a class="a-ol" target="_blank" href="' + snippet.url.href + '">' + snippet.humanUrl + '</a>\
+            s += '- <a class="a-ol" target="_blank" href="' + snippet.url + '">' + snippet.humanUrl + '</a>\
             </li>';
 
         });
