@@ -31,7 +31,7 @@ function planirovkaYandex(badHosts) {
     );
 }
 
-functiom planirovkaGoogle(badHosts) {
+function planirovkaGoogle(badHosts) {
 
 }
 
