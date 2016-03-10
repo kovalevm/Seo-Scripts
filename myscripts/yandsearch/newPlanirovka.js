@@ -10,7 +10,7 @@ if ($("div").is("#mk")) {} else {
 
 
 function planirovkaYandex(badHosts) {
-    var searchResults = $('div.serp-item[aria-posinset]');
+    var searchResults = $('.serp-item[aria-label!="Реклама"]');
 
     deleteRigthColumn();
     var data = determineData(searchResults);
