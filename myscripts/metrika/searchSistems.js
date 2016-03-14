@@ -44,7 +44,7 @@ function printBetaYaMetSearchTerms() {
 
 
     for (var i = 0; i < phrases.length; i++) {
-        table += '<tr><td style="width:170px">' + phrases[i] + "</td><td>" + $('.percent.data-table__metricym-s-visits.data-table__metricym-s-visits_type_relative').eq(i).html() + '</td></tr>';
+        table += '<tr><td style="width:170px">' + phrases[i] + "</td><td>" + $('.data-table__metricym-s-visits_type_relative').eq(i).html() + '</td></tr>';
     }
 
 
