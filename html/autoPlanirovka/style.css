@@ -111,6 +111,25 @@ div.snippet:nth-child(odd) {
     line-height: 17px;
 }
 
+.concurent .table tr > td:first-child {
+    width: 70%;
+}
+
+.row.concurent {
+    border: 1px solid black;
+    margin-bottom: 10px;
+    border-radius: 10px;
+        padding: 2px;
+}
+
+span.glyphicon.glyphicon-remove {
+    cursor: pointer;
+}
+
+span.glyphicon.glyphicon-remove.concurent-remove {
+    font-size: 17px;
+}
+
 /*
 .left {
     float: left;

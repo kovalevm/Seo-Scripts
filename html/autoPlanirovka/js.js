@@ -1,3 +1,7 @@
+String.prototype.replaceAll = function(search, replace){
+  return this.split(search).join(replace);
+}
+
 document.getElementById("go").addEventListener("click", main);
 document.getElementById("downloadCsv").addEventListener("click", saveCsv);
 
@@ -10,12 +14,16 @@ $('table#planTable').on('click', 'td.addWords span.glyphicon.glyphicon-remove', 
     $(this).parent().remove();
 });
 
-$(document).on('mouseenter', '.snippet', function() {
-    $( this ).find('.text').fadeIn();
-  });
-$(document).on('mouseleave', '.snippet', function() {
-    $( this ).find('.text').fadeOut(0);
-  });
+$('#competitors-block').on('click', 'span.glyphicon.glyphicon-remove.concurent-remove', function () {
+    $(this).parent().parent().remove();
+});
+
+$(document).on('mouseenter', '.snippet', function () {
+    $(this).find('.text').fadeIn();
+});
+$(document).on('mouseleave', '.snippet', function () {
+    $(this).find('.text').fadeOut(0);
+});
 
 //$('table#planTable').on('show.bs.popover', '.issue', function () {
 //
@@ -63,6 +71,8 @@ function main(mouseEvent) {
     var $progressbar = $('#progressbar');
     $progressbar.attr('aria-valuemax', keys.length);
     $progressbar.attr('aria-valuenow', keysCounter);
+
+    var competitors = [];
     //    $progressbar.width( '0%')
 
     var $table = $('#planTable_dad');
@@ -98,9 +108,20 @@ function main(mouseEvent) {
             tr += '</tr>';
 
             $table.append(tr);
-            issues[keysCounter] = generateSnippetsBlock(request.data.snippets, keysCounter, request.query);
+            //            issues[keysCounter] = generateSnippetsBlock(request.data.snippets, keysCounter, request.query);
 
-            $progressbar.width((keysCounter / keys.length * 100) + '%')
+            var result = '<div number="' + keysCounter + '" class="snippetsBlock" style="">';
+            //    result += '<span>Выдача по запросу:</span>'
+            result += '<h3 class="bg-info text-center">' + request.query + '</h3>';
+            request.data.snippets.forEach(function (obj, i) {
+                result += generateSnippet(obj, i);
+                competitors = addCompetitor(request.query, obj, i, competitors);
+            })
+            result += '</div>';
+            issues[keysCounter] = result;
+
+            $progressbar.width((keysCounter / keys.length * 100) + '%');
+
 
             $('a.issue[number="' + (keysCounter) + '"]')
                 .click(function (event) {
@@ -121,6 +142,9 @@ function main(mouseEvent) {
             if (keysCounter >= keys.length) {
                 chrome.tabs.remove(searchTabId);
                 $('div.progress').hide('slow');
+                console.log(competitors);
+                $('#competitors-block').append(generateCompetitorsTable(competitors));
+
                 return;
             }
             //            sendResponse("bar");
@@ -153,7 +177,7 @@ function generateSnippetsBlock(snips, id, query) {
 
 function generateSnippet(snip, i) {
     return '<div class="snippet">' +
-        '<h4>' + (i + 1) + '.  <a target="_blank" href="' + snip.url + '">' + snip.title + '</a></h4>' + '<p class="url"><a href="' + snip.url + '">' + snip.humanUrl + '</a></p>' + '<p class="text">' + snip.text + '</p>' + '</div>';
+        '<h4>' + (i + 1) + '.  <a target="_blank" href="' + snip.url + '">' + snip.title + '</a></h4>' + '<p class="url"><a target="_blank" href="' + snip.url + '">' + snip.humanUrl + '</a></p>' + '<p class="text">' + snip.text + '</p>' + '</div>';
 }
 
 function saveCsv() {
@@ -178,4 +202,95 @@ function saveCsv() {
 
 function getIssue(i) {
     return issues(i);
+}
+
+function getLocation(href) {
+    var l = document.createElement("a");
+    l.href = href;
+    return l;
+};
+
+function addCompetitor(query, snip, i, result) {
+    var a = getLocation(snip.url),
+        relativePath = a.pathname + a.search + a.hash;
+
+    if (!result[a.host]) {
+        result[a.host] = {
+            count : 0
+        };
+    }
+
+    if (!result[a.host][relativePath]) {
+        result[a.host][relativePath] = [];
+    }
+
+    result[a.host].count++;
+
+    result[a.host][relativePath].push({
+            query: query,
+            pos: i + 1
+        })
+
+    return result;
+}
+
+function generateHtmlCompetitor(host, competitor) {
+
+    var result = '\
+    <div class="row concurent">\
+        <div class="col-md-2 "><a target="_blank" href="http://' + host + '">' + host + '</a>  <span class="glyphicon glyphicon-remove concurent-remove"></span></div>\
+        <div class="col-md-1">\
+            <button type="button" class="btn btn-danger btn-xs" data-toggle="collapse" data-target="#' + host.replaceAll('.', '-') + '">Свенуть</button>\
+        </div>\
+        <div class="col-md-9 collapse in" id="' + host.replaceAll('.', '-') + '">\
+            <table class="table table-hover table-bordered">';
+    for (var resPath in competitor) {
+        if (resPath === 'count') continue;
+
+        var resPathHuman = resPath;
+        if (resPath.length > 70)
+            resPathHuman = resPath.substr(0, 70);
+        result += '<tr>\
+                        <td><a target="_blank" href="http:/' + host + resPath + '">' + resPathHuman + '</a></td><td>';
+
+        competitor[resPath].forEach(function (obj, i) {
+            result += obj.query + ' - ' + obj.pos + '<br>';
+        })
+        result += '</td></tr>';
+    }
+    result += '</table></div></div>';
+    return result;
+}
+
+function generateCompetitorsTable(competitors) {
+    var result = '';
+
+//    console.log(ASort(competitors, 'count'));
+
+    for (var host in competitors ) {
+        if ( competitors[host].count < 3 ) continue;
+        result += generateHtmlCompetitor(host, competitors[host]);
+    }
+    return result;
+}
+
+// Наша функция сравнения
+function compareCount(hostA, hostB) {
+    console.log(hostA);
+  return hostB.count - hostA.count;
+}
+
+function ASort(aInput, name){
+var aTemp = []; // временный массив
+for (var sKey in aInput){aTemp.push([sKey, aInput[sKey]]);} // ключ и его значение
+aTemp = aTemp.sort(function (){return arguments[0][1][name] - arguments[1][1][name]}); // сортируем временный массив
+var aOutput = []; // это мы вернем
+for (var nIndex = 0; nIndex < aTemp.length; nIndex++) {aOutput[aTemp[nIndex][0]] = aTemp[nIndex][1];}// собственно создаем выходной массив в нужном порядке
+delete aTemp; // убираем за собой
+delete aInput; // по идее исходный массив тоже нужно удалить, но далеко не всегда. можно вынести за пределы функции, но не забывать там убирать мусор
+return aOutput;
+}
+
+function remove() {
+    $(this).parent.remove();
 }
