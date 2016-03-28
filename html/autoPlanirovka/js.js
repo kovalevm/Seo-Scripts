@@ -214,8 +214,8 @@ function addCompetitor(query, snip, i, result) {
     var a = getLocation(snip.url),
         relativePath = a.pathname + a.search + a.hash,
         q = new SearchQuery(query, i+1),
-        pageI,
-        compI;
+        pageI = -1,
+        compI = -1;
 
 
     //Проверяем есть ли конкурент с таким хостом в массиве
@@ -227,7 +227,7 @@ function addCompetitor(query, snip, i, result) {
     }
 
     //Если его нет, то создаем новый
-    if (!compI) {
+    if (compI === -1) {
         result.unshift(new Competitor(a.host));
         compI = 0;
     };
@@ -241,7 +241,7 @@ function addCompetitor(query, snip, i, result) {
     }
 
     //если её нет, то создаем новую
-    if (!pageI) {
+    if (pageI === -1) {
         result[compI].addPage( new Page(relativePath) );
         pageI = 0;
     }
