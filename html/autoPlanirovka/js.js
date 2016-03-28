@@ -212,48 +212,90 @@ function getLocation(href) {
 
 function addCompetitor(query, snip, i, result) {
     var a = getLocation(snip.url),
-        relativePath = a.pathname + a.search + a.hash;
+        relativePath = a.pathname + a.search + a.hash,
+        q = new SearchQuery(query, i+1),
+        pageI,
+        compI;
 
-    if (!result[a.host]) {
-        result[a.host] = {
-            count : 0
-        };
+
+    //Проверяем есть ли конкурент с таким хостом в массиве
+    for (var i=0; i < result.length; i++) {
+        if (result[i].host === a.host) {
+            compI = i;
+            break;
+        }
     }
 
-    if (!result[a.host][relativePath]) {
-        result[a.host][relativePath] = [];
+    //Если его нет, то создаем новый
+    if (!compI) {
+        result.unshift(new Competitor(a.host));
+        compI = 0;
+    };
+
+    //Проверяем есть ли такая страница в массиве pages конкурента
+    for (var i=0; i < result[compI].pages.length; i++) {
+        if (result[compI].pages[i].relativPath === relativePath) {
+            pageI = i;
+            break;
+        }
     }
 
-    result[a.host].count++;
+    //если её нет, то создаем новую
+    if (!pageI) {
+        result[compI].addPage( new Page(relativePath) );
+        pageI = 0;
+    }
 
-    result[a.host][relativePath].push({
-            query: query,
-            pos: i + 1
-        })
+    //добавляем ей запрос
+    result[compI].pages[pageI].addQuery(q);
+
+    result[compI].hitsCount++;
 
     return result;
+
+
+
+//
+//    if (!result[a.host]) {
+//        result[a.host] = {
+//            count : 0
+//        };
+//    }
+//
+//    if (!result[a.host][relativePath]) {
+//        result[a.host][relativePath] = [];
+//    }
+//
+//    result[a.host].count++;
+//
+//    result[a.host][relativePath].push({
+//            query: query,
+//            pos: i + 1
+//        })
+//
+//    return result;
 }
 
-function generateHtmlCompetitor(host, competitor) {
+function generateHtmlCompetitor(c) {
 
     var result = '\
     <div class="row concurent">\
-        <div class="col-md-2 "><a target="_blank" href="http://' + host + '">' + host + '</a>  <span class="glyphicon glyphicon-remove concurent-remove"></span></div>\
+        <div class="col-md-2 "><a target="_blank" href="http://' + c.host + '">' + c.host + '</a>  <span class="glyphicon glyphicon-remove concurent-remove"></span></div>\
         <div class="col-md-1">\
-            <button type="button" class="btn btn-danger btn-xs" data-toggle="collapse" data-target="#' + host.replaceAll('.', '-') + '">Свенуть</button>\
+            <button type="button" class="btn btn-danger btn-xs" data-toggle="collapse" data-target="#' + c.host.replaceAll('.', '-') + '">Свенуть</button>\
         </div>\
-        <div class="col-md-9 collapse in" id="' + host.replaceAll('.', '-') + '">\
+        <div class="col-md-9 collapse in" id="' + c.host.replaceAll('.', '-') + '">\
             <table class="table table-hover table-bordered">';
-    for (var resPath in competitor) {
-        if (resPath === 'count') continue;
+    for (var i in c.pages) {
 
-        var resPathHuman = resPath;
-        if (resPath.length > 70)
-            resPathHuman = resPath.substr(0, 70);
+        var relPath = c.pages[i].relativPath,
+            relPathHuman = relPath;
+        if (relPath.length > 70)
+            relPathHuman = relPath.substr(0, 60);
         result += '<tr>\
-                        <td><a target="_blank" href="http:/' + host + resPath + '">' + resPathHuman + '</a></td><td>';
+                        <td><a target="_blank" href="http:/' + c.host + relPath + '">' + relPathHuman + '</a></td><td>';
 
-        competitor[resPath].forEach(function (obj, i) {
+        c.pages[i].queryes.forEach(function (obj, i) {
             result += obj.query + ' - ' + obj.pos + '<br>';
         })
         result += '</td></tr>';
@@ -265,31 +307,23 @@ function generateHtmlCompetitor(host, competitor) {
 function generateCompetitorsTable(competitors) {
     var result = '';
 
-//    console.log(ASort(competitors, 'count'));
+    competitors.sort(compareCount);
 
-    for (var host in competitors ) {
-        if ( competitors[host].count < 3 ) continue;
-        result += generateHtmlCompetitor(host, competitors[host]);
+//    console.log(competitors.length);
+
+    for (var i in competitors ) {
+        if ( competitors[i].hitsCount < 3 ) continue;
+        result += generateHtmlCompetitor(competitors[i]);
     }
+
     return result;
 }
 
 // Наша функция сравнения
-function compareCount(hostA, hostB) {
-    console.log(hostA);
-  return hostB.count - hostA.count;
+function compareCount(a, b) {
+  return  b.hitsCount - a.hitsCount;
 }
 
-function ASort(aInput, name){
-var aTemp = []; // временный массив
-for (var sKey in aInput){aTemp.push([sKey, aInput[sKey]]);} // ключ и его значение
-aTemp = aTemp.sort(function (){return arguments[0][1][name] - arguments[1][1][name]}); // сортируем временный массив
-var aOutput = []; // это мы вернем
-for (var nIndex = 0; nIndex < aTemp.length; nIndex++) {aOutput[aTemp[nIndex][0]] = aTemp[nIndex][1];}// собственно создаем выходной массив в нужном порядке
-delete aTemp; // убираем за собой
-delete aInput; // по идее исходный массив тоже нужно удалить, но далеко не всегда. можно вынести за пределы функции, но не забывать там убирать мусор
-return aOutput;
-}
 
 function remove() {
     $(this).parent.remove();
